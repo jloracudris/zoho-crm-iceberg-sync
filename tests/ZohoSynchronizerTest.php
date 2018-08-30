@@ -7,9 +7,13 @@ require 'ContactMapper.php';
 require 'Faculty/FacultyApplicationBean.php';
 require 'Faculty/FacultyMapper.php';
 
+require 'Program/ProgramApplicationBean.php';
+require 'Program/ProgramMapper.php';
+
 use Psr\Log\NullLogger;
 use TestNamespace\ContactZohoDao;
 use TestNamespace\FacultyZohoDao;
+use TestNamespace\ProgramZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
@@ -52,7 +56,9 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
     {
         $conn = $this->ConnectToDb();
         $conn->connect();
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
+
+        /*Faculties*/
+        /* $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
         $faculties = [];
         foreach ($getAllFaculties as $key  => $value) {                        
             $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
@@ -68,72 +74,29 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $mapper->setFaculties($faculties);
         
         $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $zohoSynchronizer->sendAppBeansToZoho(); */
+
+        /*End Faculties*/
+
+        /*Faculties*/
+        $getAllPrograms = $conn->fetchAll('select * from SIUP_PROGRAMAS');                
+        $prograsArr = [];
+        foreach ($getAllPrograms as $key  => $value) {                        
+            $newProgramEl = new ProgramApplicationBean(null, $value['COD_PROGRAMA'], $value['DESC_PROGRAMA'], 'FAC CIENCIAS EMPRESARIALES');
+            array_push($prograsArr, $newProgramEl);            
+        }        
+        $generator = $this->getEntitiesGeneratorService();
+       /*  $generator->generateModule('Products', 'Programs', 'Program', __DIR__.'/generated/', 'TestNamespace'); */
+        require __DIR__.'/generated/Program.php';
+        require __DIR__.'/generated/ProgramZohoDao.php';
+        $programZohoDao = new ProgramZohoDao($this->getZohoClient());
+        
+        $mapper = new ProgramMapper();
+        $mapper->setPrograms($prograsArr);
+        
+        $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
 
-        // end our shit
-
-       /*  $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('Contacts', 'Contacts', 'Contact', __DIR__.'/generated/', 'TestNamespace');
-
-        require __DIR__.'/generated/Contact.php';
-        require __DIR__.'/generated/ContactZohoDao.php';
-
-        $contactZohoDao = new ContactZohoDao($this->getZohoClient());
-        $firstName = uniqid("Test");
-        $this->firstName = $firstName;
-
-        $contacts = [
-            new ContactApplicationBean(1, "Test1", $firstName, "test@yopmail.com", "0123456789"),
-            new ContactApplicationBean(2, "Test2", $firstName, "test2@yopmail.com", "0123456789"),
-            new ContactApplicationBean(3, "Test3", $firstName, "test3@yopmail.com", "0123456789"),
-            new ContactApplicationBean(4, "Test4", $firstName, "test4@yopmail.com", "0123456789"),
-            new ContactApplicationBean(5, "Test5", $firstName, "test5@yopmail.com", "0123456789"),
-        ];
-
-        $mapper = new ContactMapper();
-        $mapper->setTestContacts($contacts);
-
-        // Let's start by removing past inserted clients:
-        $pastContacts = $contactZohoDao->searchRecords('(First Name:'.$firstName.')');
-        foreach ($pastContacts as $pastContact) {
-            $contactZohoDao->delete($pastContact->getZohoId());
-        }
-
-        // Before calling sync, let's input some test data to sync!
-        $contactBean = new \TestNamespace\Contact();
-        $contactBean->setFirstName($firstName);
-        $contactBean->setLastName("InZohoFirst");
-        $contactZohoDao->save($contactBean);
-
-        // Let's wait for the sync of our Zoho user.
-        sleep(120);
-
-        $zohoSynchronizer = new ZohoSynchronizer($contactZohoDao, $mapper);
-
-        $appBeans = $zohoSynchronizer->getZohoBeansInApp();
-
-        $found = false;
-        foreach ($appBeans as $appBean) {
-            $this->assertInstanceOf("Wabel\\Zoho\\CRM\\Sync\\ContactApplicationBean", $appBean);
-            if ($appBean->getLastName() == 'InZohoFirst') {
-                $found = true;
-            }
-        }
-        if (!$found) {
-            $this->fail('Could not find bean from Zoho in app.');
-        }
-
-
-        $zohoSynchronizer->sendAppBeansToZoho();
-
-
-        sleep(120);
-
-        $newContacts = $contactZohoDao->searchRecords('(First Name:'.$firstName.')');
-        $this->assertCount(6, $newContacts);
-        // The ZohoID should be set in all fields:
-        foreach ($newContacts as $contact) {
-            $this->assertNotEmpty($contact->getZohoId());
-        } */
+        /*End Faculties*/
     }
 }
