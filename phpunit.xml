@@ -18,8 +18,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
+         stopOnFailure="false"         
          bootstrap="./tests/bootstrap.php"
         >
 

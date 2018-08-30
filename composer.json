@@ -12,7 +12,7 @@
 	],
 	"require" : {
 		"php" : ">=5.4",
-		"wabel/zoho-crm-orm": "~1.0",
+		"ziack/zoho-crm-orm": "~1.1",
 		"doctrine/dbal": "^2.8"
 	},
   "require-dev" : {
