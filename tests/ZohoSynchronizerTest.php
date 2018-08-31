@@ -10,10 +10,14 @@ require 'Faculty/FacultyMapper.php';
 require 'Program/ProgramApplicationBean.php';
 require 'Program/ProgramMapper.php';
 
+require 'Undergraduate/UndergraduateApplicationBean.php';
+require 'Undergraduate/UndergraduateMapper.php';
+
 use Psr\Log\NullLogger;
 use TestNamespace\ContactZohoDao;
 use TestNamespace\FacultyZohoDao;
 use TestNamespace\ProgramZohoDao;
+use TestNamespace\UndergraduateZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
@@ -78,15 +82,20 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
 
         /*End Faculties*/
 
-        /*Faculties*/
-        $getAllPrograms = $conn->fetchAll('select * from SIUP_PROGRAMAS');                
+        /*Programs*/
+        /* $getAllPrograms = $conn->fetchAll('select P.COD_PROGRAMA, P.DESC_PROGRAMA, F.NOMBRE
+                                            from 
+                                            SIUP_PROGRAMAS P
+                                            Inner join FACULTADES F ON P.COLL_IN = F.COD_FACULTAD
+                                            WHERE
+                                            P.TIPO_PROGRAMA = ?', array('PREGRADO'));
         $prograsArr = [];
         foreach ($getAllPrograms as $key  => $value) {                        
-            $newProgramEl = new ProgramApplicationBean(null, $value['COD_PROGRAMA'], $value['DESC_PROGRAMA'], 'FAC CIENCIAS EMPRESARIALES');
+            $newProgramEl = new ProgramApplicationBean(null, $value['COD_PROGRAMA'], $value['DESC_PROGRAMA'], $value['NOMBRE']);
             array_push($prograsArr, $newProgramEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-       /*  $generator->generateModule('Products', 'Programs', 'Program', __DIR__.'/generated/', 'TestNamespace'); */
+        $generator->generateModule('Products', 'Programs', 'Program', __DIR__.'/generated/', 'TestNamespace');
         require __DIR__.'/generated/Program.php';
         require __DIR__.'/generated/ProgramZohoDao.php';
         $programZohoDao = new ProgramZohoDao($this->getZohoClient());
@@ -95,8 +104,30 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $mapper->setPrograms($prograsArr);
         
         $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
+        $zohoSynchronizer->sendAppBeansToZoho(); */
+
+        /*End Programs*/
+
+        /* Students */
+
+        $getAllStudents = $conn->fetchAll('SELECT SPRIDEN_FIRST_NAME, SPRIDEN_LAST_NAME, SPRIDEN_MI,CEDULA, GENERO, to_char("FECHA NACIMIENTO",\'yyyy-mm-dd\') as FECHA FROM V_SPAIDEN_BIOGRAFICA WHERE ROWNUM <= 10 ORDER BY SPRIDEN_PIDM DESC');
+        $studentsArr = [];
+        foreach ($getAllStudents as $key  => $value) {                        
+            $newStudentEl = new UndergraduateApplicationBean(null, $value['SPRIDEN_FIRST_NAME'], $value['SPRIDEN_MI'], $value['SPRIDEN_LAST_NAME'], null, null, $value['CEDULA'], $value['GENERO'], $value['FECHA']);
+            array_push($studentsArr, $newStudentEl);            
+        }        
+        $generator = $this->getEntitiesGeneratorService();
+        $generator->generateModule('Contacts', 'Undergraduates', 'Undergraduate', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/Undergraduate.php';
+        require __DIR__.'/generated/UndergraduateZohoDao.php';
+        $undergraduateZohoDao = new UndergraduateZohoDao($this->getZohoClient());
+        
+        $mapper = new UndergraduateMapper();
+        $mapper->setUndergraduate($studentsArr);
+        
+        $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
 
-        /*End Faculties*/
+        /* End Students */
     }
 }
