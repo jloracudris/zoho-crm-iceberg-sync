@@ -1,8 +1,8 @@
 <?php
-namespace Wabel\Zoho\CRM\Sync;
+/* namespace Wabel\Zoho\CRM\Sync;
 
-require 'Undergraduate/UndergraduateApplicationBean.php';
-require 'Undergraduate/UndergraduateMapper.php';
+require 'tests/Undergraduate/UndergraduateApplicationBean.php';
+require 'tests/Undergraduate/UndergraduateMapper.php';
 
 
 use Psr\Log\NullLogger;
@@ -68,4 +68,4 @@ class UndergraduateMigrationTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();    
     }
-}
+} */

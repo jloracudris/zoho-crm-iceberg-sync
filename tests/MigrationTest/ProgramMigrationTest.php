@@ -1,8 +1,8 @@
 <?php
-namespace Wabel\Zoho\CRM\Sync;
+/* namespace Wabel\Zoho\CRM\Sync;
 
-require 'Program/ProgramApplicationBean.php';
-require 'Program/ProgramMapper.php';
+require 'tests/Program/ProgramApplicationBean.php';
+require 'tests/Program/ProgramMapper.php';
 
 
 use Psr\Log\NullLogger;
@@ -73,4 +73,4 @@ class ProgramMigrationTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();    
     }
-}
+} */

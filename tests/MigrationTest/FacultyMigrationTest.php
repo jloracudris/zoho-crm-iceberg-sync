@@ -1,8 +1,8 @@
 <?php
-namespace Wabel\Zoho\CRM\Sync;
+/* namespace Wabel\Zoho\CRM\Sync;
 
-require 'Faculty/FacultyApplicationBean.php';
-require 'Faculty/FacultyMapper.php';
+require 'tests/Faculty/FacultyApplicationBean.php';
+require 'tests/Faculty/FacultyMapper.php';
 
 
 use Psr\Log\NullLogger;
@@ -66,6 +66,7 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $mapper->setFaculties($faculties);
         
         $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho();        
+        $zohoSynchronizer->sendAppBeansToZoho();
     }
 }
+ */
