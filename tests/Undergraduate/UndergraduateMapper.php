@@ -3,9 +3,11 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use TestNamespace\Undergraduate;
+use TestNamespace\CityZohoDao;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
 use Rees\Sanitizer\Sanitizer;
+use Wabel\Zoho\CRM\ZohoClient;
 
 class UndergraduateMapper implements MappingInterface {
 
@@ -25,6 +27,11 @@ class UndergraduateMapper implements MappingInterface {
     public function setUndergraduate($undergraduate)
     {
         $this->undergraduate = $undergraduate;
+    }
+
+    public function getZohoClient()
+    {
+        return new ZohoClient($GLOBALS['auth_token']);
     }
 
     /**
@@ -97,6 +104,7 @@ class UndergraduateMapper implements MappingInterface {
             'CELULAR'  => $applicationBean->getCellPhone(),
             'TELEFONO'  => $applicationBean->getPhone(),
             'DIRECCION'  => $applicationBean->getAddress(),
+            'CIUDAD'  => $applicationBean->getCity(),
         ];
 
         $rules = [
@@ -111,9 +119,19 @@ class UndergraduateMapper implements MappingInterface {
             'CELULAR'  => 'trim|validateCellPhone',
             'TELEFONO'  => 'trim|validatePhone',
             'DIRECCION'  => 'trim|strtolower|strtoupper|remove2Spaces',
+            'CIUDAD' => 'trim|strtolower|ucwords',
         ];
         
+        
         $sanitizer->sanitize($rules, $input);
+
+        $cityZohoDao= new CityZohoDao($this->getZohoClient());
+        $cities = $cityZohoDao->searchRecords('(City Code:'.$input['CIUDAD'].')');
+        $cityZohoId = null;
+        if (count($cities) > 0) {
+            $getIndex = array_search($input["CIUDAD"], $cities);
+            $cityZohoId = $cities[$getIndex]->getZohoId();
+        }
 
         $zohoBean = new Undergraduate();
         $zohoBean->setFirstName($input['PRIMER_NOMBRE']);
@@ -122,13 +140,14 @@ class UndergraduateMapper implements MappingInterface {
         $zohoBean->setSecondSurname($input['SEGUNDO_APELLIDO']);
         $zohoBean->setEmail($input['EMAIL']);
         $zohoBean->setIdentificationType($input['TIPOIDENTIFICACION']);
-        $zohoBean->setIdenfiticationNumber($input['NUMEROIDENTIFICACION']);        
+        $zohoBean->setIdentificationNumber($input['NUMEROIDENTIFICACION']);        
         $zohoBean->setGender($applicationBean->getGender());
         $zohoBean->setDateOfBirth($applicationBean->getDateOfBirth());
         $zohoBean->setSecondaryEmail($input['EMAILSECUNDARIO']);
         $zohoBean->setMobile($input['CELULAR']);
         $zohoBean->setOtherPhone($input['TELEFONO']);
         $zohoBean->setMailingStreet($input['DIRECCION']);
+        $zohoBean->setCityId($cityZohoId);
         $zohoBean->setLayout('3229357000001414049');
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {

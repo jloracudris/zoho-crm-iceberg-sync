@@ -18,6 +18,7 @@ class UndergraduateApplicationBean {
     private $CellPhone;
     private $Phone;
     private $Address;
+    private $City;
     private $zohoId;
     private $zohoLastModificationDate;
     private $Layout;
@@ -25,7 +26,7 @@ class UndergraduateApplicationBean {
     public function __construct($id = null, $FirstName = null, $MiddleName = null, $LastName = null,  
                                 $SecondSurname = null,  $IdentificationType = null,  $IdentificationNumber = null,  
                                 $Gender = null,  $DateOfBirth = null, $Email = null, $SecondaryEmail = null, $CellPhone = null, $Phone = null,
-                                $Address = null, $Layout = null,                                
+                                $Address = null, $City = null, $Layout = null,                                
                                 $zohoId = null, $zohoLastModificationDate = null) {
         $this->id = $id;
         $this->FirstName = $FirstName;
@@ -41,6 +42,7 @@ class UndergraduateApplicationBean {
         $this->CellPhone = $CellPhone;
         $this->Phone = $Phone;
         $this->Address = $Address;
+        $this->City = $City;
         $this->Layout = $Layout;
         $this->zohoId = $zohoId;
         $this->zohoLastModificationDate = $zohoLastModificationDate;        
@@ -115,6 +117,11 @@ class UndergraduateApplicationBean {
     public function getAddress()
     {
         return $this->Address;
+    }
+
+    public function getCity()
+    {
+        return $this->City;
     }
 
     public function getProgramLayout()
@@ -202,6 +209,11 @@ class UndergraduateApplicationBean {
     public function setAddress($Address)
     {
         $this->Address = $Address;
+    }
+
+    public function setCity($City)
+    {
+        $this->City = $City;
     }
 
     public function setZohoId($zohoId)
