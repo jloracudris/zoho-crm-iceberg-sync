@@ -2,28 +2,29 @@
 
 namespace Wabel\Zoho\CRM\Sync;
 
-use TestNamespace\Program;
+use TestNamespace\Period;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
+use Rees\Sanitizer\Sanitizer;
 
-class ProgramMapper implements MappingInterface {
+class PeriodMapper implements MappingInterface {
 
-    private $programs;
+    private $periods;
 
     /**
      * @return array
      */
-    public function getPrograms()
+    public function getPeriod()
     {
-        return $this->programs;
+        return $this->periods;
     }
 
     /**
-     * @param array $programs
+     * @param array $Disabilities
      */
-    public function setPrograms($programs)
+    public function setPeriods($periods)
     {
-        $this->programs = $programs;
+        $this->periods = $periods;
     }
 
     /**
@@ -34,14 +35,27 @@ class ProgramMapper implements MappingInterface {
      */
     public function toZohoBean($applicationBean)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof PeriodApplicationBean) {
+            throw new ZohoCRMException("Expected PeriodApplicationBean");
         }
-        $zohoBean = new Program();
-        $zohoBean->setProductCode($applicationBean->getProgramCode());
-        $zohoBean->setProductName($applicationBean->getProgramName());
-        $zohoBean->setFaculty($applicationBean->getProgramFaculty());
-        $zohoBean->setLayout($applicationBean->getProgramLayout());
+        $sanitizer = new Sanitizer;
+        $input = [
+            'NAME' => $applicationBean->getName(),
+        ];
+
+        $rules = [
+            'NAME' => 'trim|strtoupper',
+        ];
+
+        $sanitizer->sanitize($rules, $input);
+
+
+        $zohoBean = new Period();
+        $zohoBean->setCustomModule16Name($applicationBean->getCode());
+        $zohoBean->setAcademicPeriodName($input['NAME']);
+        $zohoBean->setStartAt($applicationBean->getStartAt());
+        $zohoBean->setEndAt($applicationBean->getEndAt());
+        $zohoBean->setYear($applicationBean->getYear());     
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -58,14 +72,15 @@ class ProgramMapper implements MappingInterface {
      */
     public function toApplicationBean(ZohoBeanInterface $zohoBean)
     {
-        if (!$zohoBean instanceof Program) {
-            throw new ZohoCRMException("Expected Program");
+        if (!$zohoBean instanceof Period) {
+            throw new ZohoCRMException("Expected Period");
         }
-        $applicationBean = new ProgramApplicationBean();
-        $applicationBean->setProgramCode($zohoBean->getProgramCode());
-        $applicationBean->setProgramName($zohoBean->getProductName());
-        $applicationBean->setProgramFaculty($zohoBean->getFaculty());
-        $applicationBean->setProgramLayout($zohoBean->getLayout());
+        $applicationBean = new Period();
+        $applicationBean->setName($zohoBean->getAcademicPeriodName());
+        $applicationBean->setCode($zohoBean->getCustomModule16Name());
+        $applicationBean->setStartAt($zohoBean->getStartAt());
+        $applicationBean->setCode($zohoBean->setEndAt());
+        $applicationBean->setCode($zohoBean->setYear());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 
@@ -80,8 +95,8 @@ class ProgramMapper implements MappingInterface {
      */
     public function onSyncToZohoComplete($applicationBean, $zohoId, \DateTime $date = null)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof PeriodApplicationBean) {
+            throw new ZohoCRMException("Expected PeriodApplicationBean");
         }
         $applicationBean->setZohoId($zohoId);
         $applicationBean->setZohoLastModificationDate($date);
@@ -94,7 +109,7 @@ class ProgramMapper implements MappingInterface {
      */
     public function getBeansToSynchronize()
     {
-        return $this->programs;
+        return $this->periods;
     }
 
     /**

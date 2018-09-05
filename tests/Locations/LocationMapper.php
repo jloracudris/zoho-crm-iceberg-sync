@@ -2,28 +2,29 @@
 
 namespace Wabel\Zoho\CRM\Sync;
 
-use TestNamespace\Program;
+use TestNamespace\Location;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
+use Rees\Sanitizer\Sanitizer;
 
-class ProgramMapper implements MappingInterface {
+class LocationMapper implements MappingInterface {
 
-    private $programs;
+    private $locations;
 
     /**
      * @return array
      */
-    public function getPrograms()
+    public function getLocation()
     {
-        return $this->programs;
+        return $this->locations;
     }
 
     /**
-     * @param array $programs
+     * @param array $Disabilities
      */
-    public function setPrograms($programs)
+    public function setLocations($locations)
     {
-        $this->programs = $programs;
+        $this->locations = $locations;
     }
 
     /**
@@ -34,14 +35,24 @@ class ProgramMapper implements MappingInterface {
      */
     public function toZohoBean($applicationBean)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof LocationApplicationBean) {
+            throw new ZohoCRMException("Expected LocationsApplicationBean");
         }
-        $zohoBean = new Program();
-        $zohoBean->setProductCode($applicationBean->getProgramCode());
-        $zohoBean->setProductName($applicationBean->getProgramName());
-        $zohoBean->setFaculty($applicationBean->getProgramFaculty());
-        $zohoBean->setLayout($applicationBean->getProgramLayout());
+        $sanitizer = new Sanitizer;
+        $input = [
+            'NAME' => $applicationBean->getName(),
+        ];
+
+        $rules = [
+            'NAME' => 'trim|strtoupper',
+        ];
+
+        $sanitizer->sanitize($rules, $input);
+
+
+        $zohoBean = new Location();
+        $zohoBean->setCustomModule17Name($applicationBean->getCode());
+        $zohoBean->setCampusName($input['NAME']);     
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -58,14 +69,12 @@ class ProgramMapper implements MappingInterface {
      */
     public function toApplicationBean(ZohoBeanInterface $zohoBean)
     {
-        if (!$zohoBean instanceof Program) {
-            throw new ZohoCRMException("Expected Program");
+        if (!$zohoBean instanceof Location) {
+            throw new ZohoCRMException("Expected Location");
         }
-        $applicationBean = new ProgramApplicationBean();
-        $applicationBean->setProgramCode($zohoBean->getProgramCode());
-        $applicationBean->setProgramName($zohoBean->getProductName());
-        $applicationBean->setProgramFaculty($zohoBean->getFaculty());
-        $applicationBean->setProgramLayout($zohoBean->getLayout());
+        $applicationBean = new Location();
+        $applicationBean->setName($zohoBean->getCampusName());
+        $applicationBean->setCode($zohoBean->getCustomModule17Name());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 
@@ -80,8 +89,8 @@ class ProgramMapper implements MappingInterface {
      */
     public function onSyncToZohoComplete($applicationBean, $zohoId, \DateTime $date = null)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof LocationApplicationBean) {
+            throw new ZohoCRMException("Expected LocationApplicationBean");
         }
         $applicationBean->setZohoId($zohoId);
         $applicationBean->setZohoLastModificationDate($date);
@@ -94,7 +103,7 @@ class ProgramMapper implements MappingInterface {
      */
     public function getBeansToSynchronize()
     {
-        return $this->programs;
+        return $this->locations;
     }
 
     /**

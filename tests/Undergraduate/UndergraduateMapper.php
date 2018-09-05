@@ -148,7 +148,7 @@ class UndergraduateMapper implements MappingInterface {
         $zohoBean->setOtherPhone($input['TELEFONO']);
         $zohoBean->setMailingStreet($input['DIRECCION']);
         $zohoBean->setCityId($cityZohoId);
-        $zohoBean->setLayout('3229357000001414049');
+        $zohoBean->setLayout($applicationBean->getProgramLayout());
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -198,7 +198,7 @@ class UndergraduateMapper implements MappingInterface {
         $applicationBean->setIdentificationNumber($zohoBean->getIdentificationNumber());
         $applicationBean->setGender($zohoBean->getGender());
         $applicationBean->setDateOfBirth($zohoBean->getDateOfBirth());
-        $applicationBean->setProgramLayout('3229357000001414049');
+        $applicationBean->setProgramLayout($zohoBean->getProgramLayout());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 

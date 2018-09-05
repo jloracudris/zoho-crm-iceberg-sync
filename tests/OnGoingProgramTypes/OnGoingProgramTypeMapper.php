@@ -2,28 +2,29 @@
 
 namespace Wabel\Zoho\CRM\Sync;
 
-use TestNamespace\Program;
+use TestNamespace\OnGoingProgramType;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
+use Rees\Sanitizer\Sanitizer;
 
-class ProgramMapper implements MappingInterface {
+class OnGoingProgramTypeMapper implements MappingInterface {
 
-    private $programs;
+    private $onGoingProgramTypes;
 
     /**
      * @return array
      */
-    public function getPrograms()
+    public function getOnGoingProgramTypes()
     {
-        return $this->programs;
+        return $this->onGoingProgramTypes;
     }
 
     /**
-     * @param array $programs
+     * @param array $Disabilities
      */
-    public function setPrograms($programs)
+    public function setOnGoingProgramTypes($onGoingProgramTypes)
     {
-        $this->programs = $programs;
+        $this->onGoingProgramTypes = $onGoingProgramTypes;
     }
 
     /**
@@ -34,14 +35,24 @@ class ProgramMapper implements MappingInterface {
      */
     public function toZohoBean($applicationBean)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof OnGoingProgramTypeApplicationBean) {
+            throw new ZohoCRMException("Expected OnGoingProgramTypeApplicationBean");
         }
-        $zohoBean = new Program();
-        $zohoBean->setProductCode($applicationBean->getProgramCode());
-        $zohoBean->setProductName($applicationBean->getProgramName());
-        $zohoBean->setFaculty($applicationBean->getProgramFaculty());
-        $zohoBean->setLayout($applicationBean->getProgramLayout());
+        $sanitizer = new Sanitizer;
+        $input = [
+            'NAME' => $applicationBean->getName(),
+        ];
+
+        $rules = [
+            'NAME' => 'trim|strtoupper',
+        ];
+
+        $sanitizer->sanitize($rules, $input);
+
+
+        $zohoBean = new OnGoingProgramType();
+        $zohoBean->setCustomModule18Name($applicationBean->getCode());
+        $zohoBean->setOnGoingProgramTypeName($input['NAME']);
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -58,14 +69,12 @@ class ProgramMapper implements MappingInterface {
      */
     public function toApplicationBean(ZohoBeanInterface $zohoBean)
     {
-        if (!$zohoBean instanceof Program) {
-            throw new ZohoCRMException("Expected Program");
+        if (!$zohoBean instanceof OnGoingProgramType) {
+            throw new ZohoCRMException("Expected OnGoingProgramType");
         }
-        $applicationBean = new ProgramApplicationBean();
-        $applicationBean->setProgramCode($zohoBean->getProgramCode());
-        $applicationBean->setProgramName($zohoBean->getProductName());
-        $applicationBean->setProgramFaculty($zohoBean->getFaculty());
-        $applicationBean->setProgramLayout($zohoBean->getLayout());
+        $applicationBean = new OnGoingProgramType();
+        $applicationBean->setName($zohoBean->getOnGoingProgramTypeName());
+        $applicationBean->setCode($zohoBean->getCustomModule18Name());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 
@@ -80,8 +89,8 @@ class ProgramMapper implements MappingInterface {
      */
     public function onSyncToZohoComplete($applicationBean, $zohoId, \DateTime $date = null)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof OnGoingProgramTypeApplicationBean) {
+            throw new ZohoCRMException("Expected OnGoingProgramTypeApplicationBean");
         }
         $applicationBean->setZohoId($zohoId);
         $applicationBean->setZohoLastModificationDate($date);
@@ -94,7 +103,7 @@ class ProgramMapper implements MappingInterface {
      */
     public function getBeansToSynchronize()
     {
-        return $this->programs;
+        return $this->onGoingProgramTypes;
     }
 
     /**

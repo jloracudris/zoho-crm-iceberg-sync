@@ -2,28 +2,29 @@
 
 namespace Wabel\Zoho\CRM\Sync;
 
-use TestNamespace\Program;
+use TestNamespace\Jornada;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
+use Rees\Sanitizer\Sanitizer;
 
-class ProgramMapper implements MappingInterface {
+class JornadaMapper implements MappingInterface {
 
-    private $programs;
+    private $jornadas;
 
     /**
      * @return array
      */
-    public function getPrograms()
+    public function getJornadas()
     {
-        return $this->programs;
+        return $this->jornadas;
     }
 
     /**
-     * @param array $programs
+     * @param array $Accounts
      */
-    public function setPrograms($programs)
+    public function setJornadas($jornadas)
     {
-        $this->programs = $programs;
+        $this->jornadas = $jornadas;
     }
 
     /**
@@ -34,14 +35,24 @@ class ProgramMapper implements MappingInterface {
      */
     public function toZohoBean($applicationBean)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof JornadaApplicationBean) {
+            throw new ZohoCRMException("Expected JornadaApplicationBean");
         }
-        $zohoBean = new Program();
-        $zohoBean->setProductCode($applicationBean->getProgramCode());
-        $zohoBean->setProductName($applicationBean->getProgramName());
-        $zohoBean->setFaculty($applicationBean->getProgramFaculty());
-        $zohoBean->setLayout($applicationBean->getProgramLayout());
+        $sanitizer = new Sanitizer;
+        $input = [
+            'NAME' => $applicationBean->getName(),
+        ];
+
+        $rules = [
+            'NAME' => 'trim|strtoupper',
+        ];
+
+        $sanitizer->sanitize($rules, $input);
+
+
+        $zohoBean = new Jornada();
+        $zohoBean->setCustomModule19Name($applicationBean->getCode());
+        $zohoBean->setJornadaName($input['NAME']);
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -58,14 +69,12 @@ class ProgramMapper implements MappingInterface {
      */
     public function toApplicationBean(ZohoBeanInterface $zohoBean)
     {
-        if (!$zohoBean instanceof Program) {
-            throw new ZohoCRMException("Expected Program");
+        if (!$zohoBean instanceof Jornada) {
+            throw new ZohoCRMException("Expected Jornada");
         }
-        $applicationBean = new ProgramApplicationBean();
-        $applicationBean->setProgramCode($zohoBean->getProgramCode());
-        $applicationBean->setProgramName($zohoBean->getProductName());
-        $applicationBean->setProgramFaculty($zohoBean->getFaculty());
-        $applicationBean->setProgramLayout($zohoBean->getLayout());
+        $applicationBean = new Jornada();
+        $applicationBean->setName($zohoBean->getJornadaName());
+        $applicationBean->setCode($zohoBean->getCustomModule19Name());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 
@@ -80,8 +89,8 @@ class ProgramMapper implements MappingInterface {
      */
     public function onSyncToZohoComplete($applicationBean, $zohoId, \DateTime $date = null)
     {
-        if (!$applicationBean instanceof ProgramApplicationBean) {
-            throw new ZohoCRMException("Expected ProgramApplicationBean");
+        if (!$applicationBean instanceof JornadaApplicationBean) {
+            throw new ZohoCRMException("Expected JornadaApplicationBean");
         }
         $applicationBean->setZohoId($zohoId);
         $applicationBean->setZohoLastModificationDate($date);
@@ -94,7 +103,7 @@ class ProgramMapper implements MappingInterface {
      */
     public function getBeansToSynchronize()
     {
-        return $this->programs;
+        return $this->jornadas;
     }
 
     /**
