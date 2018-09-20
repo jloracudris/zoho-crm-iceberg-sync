@@ -94,6 +94,17 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $averageTimeSpentMinutes;
 
 	/**
+	 * Zoho field Box Folder ID
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $boxFolderID;
+
+	/**
 	 * Zoho field City
 	 * Type: Lookup
 	 * Read only: false
@@ -310,6 +321,13 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyAverageTimeSpentMinutes = false;
+
+	/**
+	 * Whether 'boxFolderID' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyBoxFolderID = false;
 
 	/**
 	 * Whether 'city' has been changed or not.
@@ -1167,6 +1185,17 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
+	 * Get zoho field Box Folder ID
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 */
+	public function getBoxFolderID() {
+		return $this->boxFolderID;
+	}
+
+	/**
 	 * Get zoho field City
 	 * Type: Lookup
 	 * Read only: false
@@ -1854,6 +1883,21 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setAverageTimeSpentMinutes($averageTimeSpentMinutes) {
 		$this->averageTimeSpentMinutes = $averageTimeSpentMinutes;
 		$this->dirtyAverageTimeSpentMinutes = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Box Folder ID
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 *
+	 * @param string $boxFolderID
+	 */
+	public function setBoxFolderID($boxFolderID) {
+		$this->boxFolderID = $boxFolderID;
+		$this->dirtyBoxFolderID = true;
 		return $this;
 	}
 

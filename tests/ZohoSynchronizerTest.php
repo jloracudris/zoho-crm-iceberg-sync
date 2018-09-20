@@ -155,11 +155,11 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
 
         // Create a new sanitizer instance by passing an array of rules to the `Sanitizer::make` method...
 
-        /* $getVmatriculas = $conn->fetchAll('SELECT PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
+        $getVmatriculas = $conn->fetchAll('SELECT PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
                                                 SEGUNDO_APELLIDO, IDENTIFICACION, GENERO, TO_CHAR(TO_DATE(FECHA_NACIMIENTO,\'DD/MM/YYYY\'), \'yyyy-mm-dd\') as FECHA , 
                                                 TIPODOCUMENTO, EMAIL_PERSONAL, EMAIL_INSTITUCIONAL, CELULAR, TELEFONO, DIRECCION, CODCIUDAD
                                                 FROM baninst1.V_MATRICULADOS 
-                                                WHERE ROWNUM <= 5 ORDER BY IDBANNER');
+                                                ORDER BY IDBANNER');
         $VMatriculasArr = [];
         foreach ($getVmatriculas as $key  => $value) {                        
             $newStudentEl = new UndergraduateApplicationBean(null, $value['PRIMER_NOMBRE'], 
@@ -182,7 +182,7 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $mapper->setUndergraduate($VMatriculasArr);
         
         $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho(); */
+        $zohoSynchronizer->sendAppBeansToZoho();
 
         /* End Students */
 
@@ -382,7 +382,7 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho(); */
 
-        $getAllPrograms = $conn->fetchAll('select P.COD_PROGRAMA, P.DESC_PROGRAMA, F.NOMBRE
+       /*  $getAllPrograms = $conn->fetchAll('select P.COD_PROGRAMA, P.DESC_PROGRAMA, F.NOMBRE
                                             from 
                                             SIUP_PROGRAMAS P
                                             Inner join FACULTADES F ON P.COLL_IN = F.COD_FACULTAD
@@ -403,7 +403,7 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $mapper->setPrograms($prograsArr);
         
         $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho();
+        $zohoSynchronizer->sendAppBeansToZoho(); */
 
 
     }

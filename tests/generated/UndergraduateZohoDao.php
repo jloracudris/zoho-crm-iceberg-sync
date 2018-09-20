@@ -33,7 +33,7 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		    ),
 		    'Account Name' => 
 		    array (
-		      'req' => true,
+		      'req' => false,
 		      'type' => 'Lookup',
 		      'isreadonly' => false,
 		      'maxlength' => 100,
@@ -254,6 +254,20 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'getter' => 'getTag',
 		      'setter' => 'setTag',
 		      'name' => 'tag',
+		    ),
+		    'Box Folder ID' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Text',
+		      'isreadonly' => false,
+		      'maxlength' => 255,
+		      'label' => 'Box Folder ID',
+		      'dv' => 'Box Folder ID',
+		      'customfield' => true,
+		      'phpType' => 'string',
+		      'getter' => 'getBoxFolderID',
+		      'setter' => 'setBoxFolderID',
+		      'name' => 'boxFolderID',
 		    ),
 		    'Last Activity Time' => 
 		    array (

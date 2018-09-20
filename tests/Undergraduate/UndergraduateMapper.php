@@ -92,6 +92,13 @@ class UndergraduateMapper implements MappingInterface {
             return $field;
         });
 
+        $sanitizer->register('citySanitize', function ($field) {
+            if($field == '')
+                return null;
+            else
+                return $field;
+        });
+
         $input = [
             'PRIMER_NOMBRE'  => htmlentities($applicationBean->getFirstName(), ENT_QUOTES, "UTF-8"),
             'SEGUNDO_NOMBRE'  => htmlentities($applicationBean->getMiddleName(), ENT_QUOTES, "UTF-8"),
@@ -119,19 +126,22 @@ class UndergraduateMapper implements MappingInterface {
             'CELULAR'  => 'trim|validateCellPhone',
             'TELEFONO'  => 'trim|validatePhone',
             'DIRECCION'  => 'trim|strtolower|strtoupper|remove2Spaces',
-            'CIUDAD' => 'trim|strtolower|ucwords',
+            'CIUDAD' => 'trim|strtolower|ucwords|citySanitize',
         ];
         
         
         $sanitizer->sanitize($rules, $input);
 
-        $cityZohoDao= new CityZohoDao($this->getZohoClient());
-        $cities = $cityZohoDao->searchRecords('(City Code:'.$input['CIUDAD'].')');
         $cityZohoId = null;
-        if (count($cities) > 0) {
-            $getIndex = array_search($input["CIUDAD"], $cities);
-            $cityZohoId = $cities[$getIndex]->getZohoId();
+        if($input['CIUDAD'] != null) {
+            $cityZohoDao= new CityZohoDao($this->getZohoClient());
+            $cities = $cityZohoDao->searchRecords('(City Code:'.$input['CIUDAD'].')');        
+            if (count($cities) > 0) {
+                $getIndex = array_search($input["CIUDAD"], $cities);
+                $cityZohoId = $cities[$getIndex]->getZohoId();
+            }
         }
+        
 
         $zohoBean = new Undergraduate();
         $zohoBean->setFirstName($input['PRIMER_NOMBRE']);
@@ -147,7 +157,9 @@ class UndergraduateMapper implements MappingInterface {
         $zohoBean->setMobile($input['CELULAR']);
         $zohoBean->setOtherPhone($input['TELEFONO']);
         $zohoBean->setMailingStreet($input['DIRECCION']);
-        $zohoBean->setCityId($cityZohoId);
+        if($cityZohoId != null) {
+            $zohoBean->setCityId($cityZohoId);
+        }
         $zohoBean->setLayout($applicationBean->getProgramLayout());
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
