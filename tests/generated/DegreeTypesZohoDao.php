@@ -3,61 +3,61 @@ namespace TestNamespace;
 
 /**
  */
-class JornadaZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
+class DegreeTypesZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 
 	/**
 	 */
 	public function getBeanClassName() {
-		return 'TestNamespace\\Jornada';
+		return 'TestNamespace\\DegreeTypes';
 	}
 
 	/**
 	 */
 	public function getFields() {
 		return array (
-		  'CustomModule19 Information' => 
+		  'CustomModule21 Information' => 
 		  array (
-		    'Jornada Code' => 
+		    'CustomModule21 Name' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
-		      'label' => 'Jornada Code',
-		      'dv' => 'Jornada Code',
-		      'customfield' => true,
+		      'maxlength' => 120,
+		      'label' => 'CustomModule21 Name',
+		      'dv' => 'Degree Type Code',
+		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getJornadaCode',
-		      'setter' => 'setJornadaCode',
-		      'name' => 'jornadaCode',
+		      'getter' => 'getCustomModule21Name',
+		      'setter' => 'setCustomModule21Name',
+		      'name' => 'customModule21Name',
 		    ),
-		    'CustomModule19 Owner' => 
+		    'CustomModule21 Owner' => 
 		    array (
 		      'req' => false,
 		      'type' => 'Lookup',
 		      'isreadonly' => false,
 		      'maxlength' => 120,
-		      'label' => 'CustomModule19 Owner',
-		      'dv' => 'Jornada Propietario',
+		      'label' => 'CustomModule21 Owner',
+		      'dv' => 'Degree Type Propietario',
 		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule19Owner',
-		      'setter' => 'setCustomModule19Owner',
-		      'name' => 'customModule19Owner',
+		      'getter' => 'getCustomModule21Owner',
+		      'setter' => 'setCustomModule21Owner',
+		      'name' => 'customModule21Owner',
 		    ),
-		    'CustomModule19 Name' => 
+		    'Degree Type Name' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 120,
-		      'label' => 'CustomModule19 Name',
-		      'dv' => 'Nombre de Jornada',
-		      'customfield' => false,
+		      'maxlength' => 255,
+		      'label' => 'Degree Type Name',
+		      'dv' => 'Degree Type Name',
+		      'customfield' => true,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule19Name',
-		      'setter' => 'setCustomModule19Name',
-		      'name' => 'customModule19Name',
+		      'getter' => 'getDegreeTypeName',
+		      'setter' => 'setDegreeTypeName',
+		      'name' => 'degreeTypeName',
 		    ),
 		    'Created By' => 
 		    array (
@@ -168,18 +168,18 @@ class JornadaZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 	/**
 	 */
 	public function getModule() {
-		return 'CustomModule19';
+		return 'CustomModule21';
 	}
 
 	/**
 	 */
 	public function getPluralModuleName() {
-		return 'Jornadas';
+		return 'DegreeTypes';
 	}
 
 	/**
 	 */
 	public function getSingularModuleName() {
-		return 'Jornada';
+		return 'DegreeTypes';
 	}
 }

@@ -17,19 +17,19 @@ class LocationZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		return array (
 		  'CustomModule17 Information' => 
 		  array (
-		    'CustomModule17 Name' => 
+		    'Campus Code' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 120,
-		      'label' => 'CustomModule17 Name',
+		      'maxlength' => 255,
+		      'label' => 'Campus Code',
 		      'dv' => 'Campus Code',
-		      'customfield' => false,
+		      'customfield' => true,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule17Name',
-		      'setter' => 'setCustomModule17Name',
-		      'name' => 'customModule17Name',
+		      'getter' => 'getCampusCode',
+		      'setter' => 'setCampusCode',
+		      'name' => 'campusCode',
 		    ),
 		    'CustomModule17 Owner' => 
 		    array (
@@ -45,19 +45,19 @@ class LocationZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setCustomModule17Owner',
 		      'name' => 'customModule17Owner',
 		    ),
-		    'Campus Name' => 
+		    'CustomModule17 Name' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
-		      'label' => 'Campus Name',
-		      'dv' => 'Campus Name',
-		      'customfield' => true,
+		      'maxlength' => 120,
+		      'label' => 'CustomModule17 Name',
+		      'dv' => 'Nombre de Campus',
+		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getCampusName',
-		      'setter' => 'setCampusName',
-		      'name' => 'campusName',
+		      'getter' => 'getCustomModule17Name',
+		      'setter' => 'setCustomModule17Name',
+		      'name' => 'customModule17Name',
 		    ),
 		    'Created By' => 
 		    array (

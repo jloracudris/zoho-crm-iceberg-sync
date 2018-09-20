@@ -51,8 +51,8 @@ class JornadaMapper implements MappingInterface {
 
 
         $zohoBean = new Jornada();
-        $zohoBean->setCustomModule19Name($applicationBean->getCode());
-        $zohoBean->setJornadaName($input['NAME']);
+        $zohoBean->setJornadaCode($applicationBean->getCode());
+        $zohoBean->setCustomModule19Name($input['NAME']);
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -73,8 +73,8 @@ class JornadaMapper implements MappingInterface {
             throw new ZohoCRMException("Expected Jornada");
         }
         $applicationBean = new Jornada();
-        $applicationBean->setName($zohoBean->getJornadaName());
-        $applicationBean->setCode($zohoBean->getCustomModule19Name());
+        $applicationBean->setName($zohoBean->getCustomModule19Name());
+        $applicationBean->setCode($zohoBean->getJornadaCode());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 

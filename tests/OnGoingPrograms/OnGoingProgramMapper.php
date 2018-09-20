@@ -5,10 +5,14 @@ namespace Wabel\Zoho\CRM\Sync;
 use TestNamespace\OnGoingProgram;
 use TestNamespace\ProgramZohoDao;
 use TestNamespace\UndergraduateZohoDao;
+use TestNamespace\PeriodZohoDao;
+use TestNamespace\LocationZohoDao;
+use TestNamespace\JornadaZohoDao;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
 use Wabel\Zoho\CRM\ZohoClient;
 use Rees\Sanitizer\Sanitizer;
+use Wabel\Zoho\CRM\Exception\ZohoCRMResponseException;
 
 class OnGoingProgramMapper implements MappingInterface {
 
@@ -63,21 +67,32 @@ class OnGoingProgramMapper implements MappingInterface {
                 return 'false';
         });
 
+        $sanitizer->register('blank2Null', function ($field) {
+            if($field != "") 
+                return $field;
+            else
+                return null;
+        });
+
         $input = [
             'NUMEROIDENTIFICACION' => $applicationBean->getIdNumber(),
             'PRODUCT' => $applicationBean->getProduct(),
             'ESTADO' => $applicationBean->getEnabled(),
+            'PERIODO' => $applicationBean->getCurrentAcademicPeriod(),
+            'JORNADA' => $applicationBean->getJornada()
         ];
 
         $rules = [
             'NUMEROIDENTIFICACION' => 'trim|onlyNumbersId',
             'PRODUCT' => 'trim',
             'ESTADO' => 'trim|prepareStatus',
+            'PERIODO' => 'trim',
+            'JORNADA' => 'trim|blank2Null',
         ];
         
         
         $sanitizer->sanitize($rules, $input);
-
+        $zohoBean = new OnGoingProgram();
         $programZohoDao = new ProgramZohoDao($this->getZohoClient());
         $programs = $programZohoDao->searchRecords('(Product Code:'.$input["PRODUCT"].')');
         $programZohoId = null;
@@ -85,8 +100,7 @@ class OnGoingProgramMapper implements MappingInterface {
             $getIndex = array_search($input["PRODUCT"], $programs);
             $programZohoId = $programs[$getIndex]->getZohoId();
         }
-        
-        $zohoBean = new OnGoingProgram();
+
         $undergraduatedZohoDao = new UndergraduateZohoDao($this->getZohoClient());
         $students = $undergraduatedZohoDao->searchRecords('(Identification Number:'.$input["NUMEROIDENTIFICACION"].')');
         $studentZohoId = null;
@@ -95,12 +109,46 @@ class OnGoingProgramMapper implements MappingInterface {
             $studentZohoId = $students[$getIndex]->getZohoId();
         }
 
-        $zohoBean->setStudentId($studentZohoId);
-        $zohoBean->setCurrentAcademicPeriod($applicationBean->getCurrentAcademicPeriod());
-        /* $zohoBean->setEnabled($input["ESTADO"]); */
-        $zohoBean->setJornada($applicationBean->getJornada());
+        $periodZohoId = null;
+        $periodZohoDao = new PeriodZohoDao($this->getZohoClient());        
+        $fetchPeriods = $periodZohoDao->searchRecords('(CustomModule16 Name:'.$input["PERIODO"].')');        
+        if (count($fetchPeriods) > 0) {
+            $getIndex = array_search($input["PERIODO"], $fetchPeriods);
+            $periodZohoId = $fetchPeriods[$getIndex]->getZohoId();
+        }
         
-        $zohoBean->setLocation($applicationBean->getLocation());
+        $locationZohoId = null;
+        $locationZohoDao = new LocationZohoDao($this->getZohoClient());
+        $locations = $locationZohoDao->searchRecords('(Campus Code:'.$applicationBean->getLocation().')');        
+        if (count($locations) > 0) {
+            $getIndex = array_search($applicationBean->getLocation(), $locations);
+            $locationZohoId = $locations[$getIndex]->getZohoId();
+        }
+
+        $jornadaZohoId = null;
+        if ($input["JORNADA"] != null) {
+            $jornadaZohoDao = new JornadaZohoDao($this->getZohoClient());
+            $jornadas = $jornadaZohoDao->searchRecords('(Jornada Code:'.$input["JORNADA"].')');        
+            if (count($jornadas) > 0) {
+                $getIndex = array_search($input["JORNADA"], $jornadas);
+                $jornadaZohoId = $jornadas[$getIndex]->getZohoId();
+            }
+        }
+
+        $zohoBean->setStudentId($studentZohoId);        
+        if ($periodZohoId != null) {
+            $zohoBean->setCurrentAcademicPeriodID($periodZohoId);
+        }
+        
+        /* $zohoBean->setEnabled($input["ESTADO"]); */
+        if ($jornadaZohoId != null) {
+            $zohoBean->setJornadaID($jornadaZohoId);
+        }
+        
+        if ($locationZohoId != null) {
+            $zohoBean->setLocationID($locationZohoId);
+        }
+        
         $zohoBean->setType($applicationBean->getType());        
         $zohoBean->setCustomModule4Name($applicationBean->getBannerStudentId());
         $zohoBean->setZohoId($applicationBean->getZohoId());

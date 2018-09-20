@@ -61,10 +61,10 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		    ),
 		    'Current Academic Period' => 
 		    array (
-		      'req' => true,
-		      'type' => 'Text',
+		      'req' => false,
+		      'type' => 'Lookup',
 		      'isreadonly' => false,
-		      'maxlength' => 6,
+		      'maxlength' => 120,
 		      'label' => 'Current Academic Period',
 		      'dv' => 'Current Academic Period',
 		      'customfield' => true,
@@ -90,9 +90,9 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		    'Jornada' => 
 		    array (
 		      'req' => false,
-		      'type' => 'Text',
+		      'type' => 'Lookup',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
+		      'maxlength' => 120,
 		      'label' => 'Jornada',
 		      'dv' => 'Jornada',
 		      'customfield' => true,
@@ -118,9 +118,9 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		    'Location' => 
 		    array (
 		      'req' => false,
-		      'type' => 'Text',
+		      'type' => 'Lookup',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
+		      'maxlength' => 120,
 		      'label' => 'Location',
 		      'dv' => 'Location',
 		      'customfield' => true,
@@ -143,20 +143,6 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setLastActivityTime',
 		      'name' => 'lastActivityTime',
 		    ),
-		    'Created By' => 
-		    array (
-		      'req' => false,
-		      'type' => 'OwnerLookup',
-		      'isreadonly' => false,
-		      'maxlength' => 25,
-		      'label' => 'Created By',
-		      'dv' => 'Creado por',
-		      'customfield' => false,
-		      'phpType' => 'string',
-		      'getter' => 'getCreatedBy',
-		      'setter' => 'setCreatedBy',
-		      'name' => 'createdBy',
-		    ),
 		    'Currency' => 
 		    array (
 		      'req' => false,
@@ -174,6 +160,20 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'getter' => 'getCurrency',
 		      'setter' => 'setCurrency',
 		      'name' => 'currency',
+		    ),
+		    'Created By' => 
+		    array (
+		      'req' => false,
+		      'type' => 'OwnerLookup',
+		      'isreadonly' => false,
+		      'maxlength' => 25,
+		      'label' => 'Created By',
+		      'dv' => 'Creado por',
+		      'customfield' => false,
+		      'phpType' => 'string',
+		      'getter' => 'getCreatedBy',
+		      'setter' => 'setCreatedBy',
+		      'name' => 'createdBy',
 		    ),
 		    'Modified By' => 
 		    array (
@@ -230,6 +230,48 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'getter' => 'getDegreeID',
 		      'setter' => 'setDegreeID',
 		      'name' => 'degreeID',
+		    ),
+		    'Current Academic Period_ID' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Lookup ID',
+		      'isreadonly' => true,
+		      'maxlength' => 100,
+		      'label' => 'Current Academic Period_ID',
+		      'dv' => 'Current Academic Period_ID',
+		      'customfield' => true,
+		      'phpType' => 'string',
+		      'getter' => 'getCurrentAcademicPeriodID',
+		      'setter' => 'setCurrentAcademicPeriodID',
+		      'name' => 'currentAcademicPeriodID',
+		    ),
+		    'Jornada_ID' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Lookup ID',
+		      'isreadonly' => true,
+		      'maxlength' => 100,
+		      'label' => 'Jornada_ID',
+		      'dv' => 'Jornada_ID',
+		      'customfield' => true,
+		      'phpType' => 'string',
+		      'getter' => 'getJornadaID',
+		      'setter' => 'setJornadaID',
+		      'name' => 'jornadaID',
+		    ),
+		    'Location_ID' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Lookup ID',
+		      'isreadonly' => true,
+		      'maxlength' => 100,
+		      'label' => 'Location_ID',
+		      'dv' => 'Location_ID',
+		      'customfield' => true,
+		      'phpType' => 'string',
+		      'getter' => 'getLocationID',
+		      'setter' => 'setLocationID',
+		      'name' => 'locationID',
 		    ),
 		    'createdTime' => 
 		    array (

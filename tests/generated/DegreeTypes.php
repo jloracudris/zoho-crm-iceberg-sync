@@ -3,7 +3,7 @@ namespace TestNamespace;
 
 /**
  */
-class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
+class DegreeTypes implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Zoho field Created By
@@ -36,7 +36,7 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $currency;
 
 	/**
-	 * Zoho field CustomModule19 Name
+	 * Zoho field CustomModule21 Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 120
@@ -44,10 +44,10 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 *
 	 * @var string
 	 */
-	protected $customModule19Name;
+	protected $customModule21Name;
 
 	/**
-	 * Zoho field CustomModule19 Owner
+	 * Zoho field CustomModule21 Owner
 	 * Type: Lookup
 	 * Read only: false
 	 * Max length: 120
@@ -55,7 +55,18 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 *
 	 * @var string
 	 */
-	protected $customModule19Owner;
+	protected $customModule21Owner;
+
+	/**
+	 * Zoho field Degree Type Name
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $degreeTypeName;
 
 	/**
 	 * Whether 'createdBy' has been changed or not.
@@ -79,25 +90,25 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtyCurrency = false;
 
 	/**
-	 * Whether 'customModule19Name' has been changed or not.
+	 * Whether 'customModule21Name' has been changed or not.
 	 *
 	 * @var bool
 	 */
-	protected $dirtyCustomModule19Name = false;
+	protected $dirtyCustomModule21Name = false;
 
 	/**
-	 * Whether 'customModule19Owner' has been changed or not.
+	 * Whether 'customModule21Owner' has been changed or not.
 	 *
 	 * @var bool
 	 */
-	protected $dirtyCustomModule19Owner = false;
+	protected $dirtyCustomModule21Owner = false;
 
 	/**
-	 * Whether 'jornadaCode' has been changed or not.
+	 * Whether 'degreeTypeName' has been changed or not.
 	 *
 	 * @var bool
 	 */
-	protected $dirtyJornadaCode = false;
+	protected $dirtyDegreeTypeName = false;
 
 	/**
 	 * Whether 'lastActivityTime' has been changed or not.
@@ -140,17 +151,6 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyZohoId = false;
-
-	/**
-	 * Zoho field Jornada Code
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 *
-	 * @var string
-	 */
-	protected $jornadaCode;
 
 	/**
 	 * Zoho field Last Activity Time
@@ -245,36 +245,36 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Get zoho field CustomModule19 Name
+	 * Get zoho field CustomModule21 Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 */
-	public function getCustomModule19Name() {
-		return $this->customModule19Name;
+	public function getCustomModule21Name() {
+		return $this->customModule21Name;
 	}
 
 	/**
-	 * Get zoho field CustomModule19 Owner
+	 * Get zoho field CustomModule21 Owner
 	 * Type: Lookup
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 */
-	public function getCustomModule19Owner() {
-		return $this->customModule19Owner;
+	public function getCustomModule21Owner() {
+		return $this->customModule21Owner;
 	}
 
 	/**
-	 * Get zoho field Jornada Code
+	 * Get zoho field Degree Type Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 255
 	 * Custom field: true
 	 */
-	public function getJornadaCode() {
-		return $this->jornadaCode;
+	public function getDegreeTypeName() {
+		return $this->degreeTypeName;
 	}
 
 	/**
@@ -388,47 +388,47 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Set zoho field CustomModule19 Name
+	 * Set zoho field CustomModule21 Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 *
-	 * @param string $customModule19Name
+	 * @param string $customModule21Name
 	 */
-	public function setCustomModule19Name($customModule19Name) {
-		$this->customModule19Name = $customModule19Name;
-		$this->dirtyCustomModule19Name = true;
+	public function setCustomModule21Name($customModule21Name) {
+		$this->customModule21Name = $customModule21Name;
+		$this->dirtyCustomModule21Name = true;
 		return $this;
 	}
 
 	/**
-	 * Set zoho field CustomModule19 Owner
+	 * Set zoho field CustomModule21 Owner
 	 * Type: Lookup
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 *
-	 * @param string $customModule19Owner
+	 * @param string $customModule21Owner
 	 */
-	public function setCustomModule19Owner($customModule19Owner) {
-		$this->customModule19Owner = $customModule19Owner;
-		$this->dirtyCustomModule19Owner = true;
+	public function setCustomModule21Owner($customModule21Owner) {
+		$this->customModule21Owner = $customModule21Owner;
+		$this->dirtyCustomModule21Owner = true;
 		return $this;
 	}
 
 	/**
-	 * Set zoho field Jornada Code
+	 * Set zoho field Degree Type Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 255
 	 * Custom field: true
 	 *
-	 * @param string $jornadaCode
+	 * @param string $degreeTypeName
 	 */
-	public function setJornadaCode($jornadaCode) {
-		$this->jornadaCode = $jornadaCode;
-		$this->dirtyJornadaCode = true;
+	public function setDegreeTypeName($degreeTypeName) {
+		$this->degreeTypeName = $degreeTypeName;
+		$this->dirtyDegreeTypeName = true;
 		return $this;
 	}
 

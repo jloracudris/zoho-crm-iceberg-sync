@@ -3,7 +3,7 @@ namespace TestNamespace;
 
 /**
  */
-class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
+class OnGoingProgramLoad implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Zoho field Created By
@@ -36,7 +36,7 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $currency;
 
 	/**
-	 * Zoho field CustomModule19 Name
+	 * Zoho field CustomModule22 Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 120
@@ -44,10 +44,10 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 *
 	 * @var string
 	 */
-	protected $customModule19Name;
+	protected $customModule22Name;
 
 	/**
-	 * Zoho field CustomModule19 Owner
+	 * Zoho field CustomModule22 Owner
 	 * Type: Lookup
 	 * Read only: false
 	 * Max length: 120
@@ -55,7 +55,7 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 *
 	 * @var string
 	 */
-	protected $customModule19Owner;
+	protected $customModule22Owner;
 
 	/**
 	 * Whether 'createdBy' has been changed or not.
@@ -79,25 +79,18 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtyCurrency = false;
 
 	/**
-	 * Whether 'customModule19Name' has been changed or not.
+	 * Whether 'customModule22Name' has been changed or not.
 	 *
 	 * @var bool
 	 */
-	protected $dirtyCustomModule19Name = false;
+	protected $dirtyCustomModule22Name = false;
 
 	/**
-	 * Whether 'customModule19Owner' has been changed or not.
+	 * Whether 'customModule22Owner' has been changed or not.
 	 *
 	 * @var bool
 	 */
-	protected $dirtyCustomModule19Owner = false;
-
-	/**
-	 * Whether 'jornadaCode' has been changed or not.
-	 *
-	 * @var bool
-	 */
-	protected $dirtyJornadaCode = false;
+	protected $dirtyCustomModule22Owner = false;
 
 	/**
 	 * Whether 'lastActivityTime' has been changed or not.
@@ -128,6 +121,13 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtyModifiedTime = false;
 
 	/**
+	 * Whether 'ongoingProgramLoadName' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyOngoingProgramLoadName = false;
+
+	/**
 	 * Whether 'tag' has been changed or not.
 	 *
 	 * @var bool
@@ -140,17 +140,6 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyZohoId = false;
-
-	/**
-	 * Zoho field Jornada Code
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 *
-	 * @var string
-	 */
-	protected $jornadaCode;
 
 	/**
 	 * Zoho field Last Activity Time
@@ -189,6 +178,17 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var \DateTime
 	 */
 	protected $modifiedTime;
+
+	/**
+	 * Zoho field Ongoing Program Load Name
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $ongoingProgramLoadName;
 
 	/**
 	 * Zoho field Tag
@@ -245,36 +245,25 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Get zoho field CustomModule19 Name
+	 * Get zoho field CustomModule22 Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 */
-	public function getCustomModule19Name() {
-		return $this->customModule19Name;
+	public function getCustomModule22Name() {
+		return $this->customModule22Name;
 	}
 
 	/**
-	 * Get zoho field CustomModule19 Owner
+	 * Get zoho field CustomModule22 Owner
 	 * Type: Lookup
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 */
-	public function getCustomModule19Owner() {
-		return $this->customModule19Owner;
-	}
-
-	/**
-	 * Get zoho field Jornada Code
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 */
-	public function getJornadaCode() {
-		return $this->jornadaCode;
+	public function getCustomModule22Owner() {
+		return $this->customModule22Owner;
 	}
 
 	/**
@@ -313,6 +302,17 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 */
 	public function getModifiedTime() {
 		return $this->modifiedTime;
+	}
+
+	/**
+	 * Get zoho field Ongoing Program Load Name
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 */
+	public function getOngoingProgramLoadName() {
+		return $this->ongoingProgramLoadName;
 	}
 
 	/**
@@ -388,47 +388,32 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Set zoho field CustomModule19 Name
+	 * Set zoho field CustomModule22 Name
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 *
-	 * @param string $customModule19Name
+	 * @param string $customModule22Name
 	 */
-	public function setCustomModule19Name($customModule19Name) {
-		$this->customModule19Name = $customModule19Name;
-		$this->dirtyCustomModule19Name = true;
+	public function setCustomModule22Name($customModule22Name) {
+		$this->customModule22Name = $customModule22Name;
+		$this->dirtyCustomModule22Name = true;
 		return $this;
 	}
 
 	/**
-	 * Set zoho field CustomModule19 Owner
+	 * Set zoho field CustomModule22 Owner
 	 * Type: Lookup
 	 * Read only: false
 	 * Max length: 120
 	 * Custom field: false
 	 *
-	 * @param string $customModule19Owner
+	 * @param string $customModule22Owner
 	 */
-	public function setCustomModule19Owner($customModule19Owner) {
-		$this->customModule19Owner = $customModule19Owner;
-		$this->dirtyCustomModule19Owner = true;
-		return $this;
-	}
-
-	/**
-	 * Set zoho field Jornada Code
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 *
-	 * @param string $jornadaCode
-	 */
-	public function setJornadaCode($jornadaCode) {
-		$this->jornadaCode = $jornadaCode;
-		$this->dirtyJornadaCode = true;
+	public function setCustomModule22Owner($customModule22Owner) {
+		$this->customModule22Owner = $customModule22Owner;
+		$this->dirtyCustomModule22Owner = true;
 		return $this;
 	}
 
@@ -483,6 +468,21 @@ class Jornada implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setModifiedTime(\DateTime $modifiedTime) {
 		$this->modifiedTime = $modifiedTime;
 		$this->dirtyModifiedTime = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Ongoing Program Load Name
+	 * Type: Text
+	 * Read only: false
+	 * Max length: 255
+	 * Custom field: true
+	 *
+	 * @param string $ongoingProgramLoadName
+	 */
+	public function setOngoingProgramLoadName($ongoingProgramLoadName) {
+		$this->ongoingProgramLoadName = $ongoingProgramLoadName;
+		$this->dirtyOngoingProgramLoadName = true;
 		return $this;
 	}
 

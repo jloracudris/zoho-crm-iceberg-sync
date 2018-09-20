@@ -43,9 +43,18 @@ require 'Accounts/AccountMapper.php';
 require 'Jornadas/JornadaApplicationBean.php';
 require 'Jornadas/JornadaMapper.php';
 
+require 'DegreeTypes/DegreeTypesApplicationBean.php';
+require 'DegreeTypes/DegreeTypesMapper.php';
+
+require 'OnGoingProgramLoad/OnGoingProgramLoadApplicationBean.php';
+require 'OnGoingProgramLoad/OnGoingProgramLoadMapper.php';
+
+
 
 use Psr\Log\NullLogger;
 use TestNamespace\ContactZohoDao;
+use TestNamespace\DegreeTypesZohoDao;
+use TestNamespace\OnGoingProgramLoadZohoDao;
 use TestNamespace\FacultyZohoDao;
 use TestNamespace\ProgramZohoDao;
 use TestNamespace\UndergraduateZohoDao;
@@ -158,8 +167,10 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $getVmatriculas = $conn->fetchAll('SELECT PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
                                                 SEGUNDO_APELLIDO, IDENTIFICACION, GENERO, TO_CHAR(TO_DATE(FECHA_NACIMIENTO,\'DD/MM/YYYY\'), \'yyyy-mm-dd\') as FECHA , 
                                                 TIPODOCUMENTO, EMAIL_PERSONAL, EMAIL_INSTITUCIONAL, CELULAR, TELEFONO, DIRECCION, CODCIUDAD
-                                                FROM baninst1.V_MATRICULADOS 
-                                                ORDER BY IDBANNER');
+                                                FROM baninst1.V_MATRICULADOS
+                                                WHERE ROWNUM <= 100 
+                                                ORDER BY IDBANNER');        
+            
         $VMatriculasArr = [];
         foreach ($getVmatriculas as $key  => $value) {                        
             $newStudentEl = new UndergraduateApplicationBean(null, $value['PRIMER_NOMBRE'], 
@@ -261,8 +272,8 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
 
         $zohoSynchronizer = new ZohoSynchronizer($agreementZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho(); */
-/* 
-        $getOnGoingProgram = $conn->fetchAll('select CODPROGRAMA, PERIODO, ESTADO, JORNADA, SEDE, TIPOESTUDIANTE, IDENTIFICACION, IDBANNER FROM baninst1.V_MATRICULADOS 
+
+        /* $getOnGoingProgram = $conn->fetchAll('select CODPROGRAMA, PERIODO, ESTADO, JORNADA, SEDE, TIPOESTUDIANTE, IDENTIFICACION, IDBANNER FROM baninst1.V_MATRICULADOS 
                                               WHERE ROWNUM <= 5 ORDER BY IDBANNER');
         $onGoingProgramArr = [];
         foreach ($getOnGoingProgram as $key  => $value) {                        
@@ -278,6 +289,12 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         require __DIR__.'/generated/UndergraduateZohoDao.php';        
         require __DIR__.'/generated/Program.php';
         require __DIR__.'/generated/Undergraduate.php';
+        require __DIR__.'/generated/Period.php';
+        require __DIR__.'/generated/PeriodZohoDao.php';
+        require __DIR__.'/generated/Location.php';
+        require __DIR__.'/generated/LocationZohoDao.php';
+        require __DIR__.'/generated/Jornada.php';
+        require __DIR__.'/generated/JornadaZohoDao.php';
         $onGoingProgramZohoDao = new OnGoingProgramZohoDao($this->getZohoClient());
 
         $mapper = new OnGoingProgramMapper();
@@ -287,7 +304,7 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer->sendAppBeansToZoho(); */
 
 
-       /*  $getLocations = $conn->fetchAll('select * from SATURN.STVCAMP');
+        /* $getLocations = $conn->fetchAll('select * from SATURN.STVCAMP');
         $locationsArr = [];
         foreach ($getLocations as $key  => $value) {                        
             $newLocationEl = new LocationApplicationBean(null, $value['STVCAMP_DESC'], $value['STVCAMP_CODE']);
@@ -405,6 +422,41 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho(); */
 
+        /* $getAllDegreeTypes = $conn->fetchAll('select * from SATURN.STVLEVL');
+        $degreeTypesArr = [];
+        foreach ($getAllDegreeTypes as $key  => $value) {                        
+            $newDegreeTypeEl = new DegreeTypesApplicationBean(null, $value['STVLEVL_DESC'], $value['STVLEVL_CODE']);
+            array_push($degreeTypesArr, $newDegreeTypeEl);            
+        }        
+        $generator = $this->getEntitiesGeneratorService();
+        $generator->generateModule('CustomModule21', 'DegreeTypes', 'DegreeTypes', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/DegreeTypes.php';
+        require __DIR__.'/generated/DegreeTypesZohoDao.php';
+        $degreeTypeZohoDao = new DegreeTypesZohoDao($this->getZohoClient());
+        
+        $mapper = new  DegreeTypesMapper();
+        $mapper->setDegreeTypes($degreeTypesArr);
+        
+        $zohoSynchronizer = new ZohoSynchronizer($degreeTypeZohoDao, $mapper);
+        $zohoSynchronizer->sendAppBeansToZoho(); */
+
+        /* $getAllOnGoingProgramLoad = $conn->fetchAll('SELECT * FROM SATURN.STVATTS WHERE STVATTS_DESC like (\'%CARGA%\')');
+        $OnGoingProgramLoadArr = [];
+        foreach ($getAllOnGoingProgramLoad as $key  => $value) {                        
+            $newOnGoPloadEl = new OnGoingProgramLoadApplicationBean(null, $value['STVATTS_DESC'], $value['STVATTS_CODE']);
+            array_push($OnGoingProgramLoadArr, $newOnGoPloadEl);            
+        }        
+        $generator = $this->getEntitiesGeneratorService();
+        $generator->generateModule('CustomModule22', 'OnGoingProgramLoad', 'OnGoingProgramLoad', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/OnGoingProgramLoad.php';
+        require __DIR__.'/generated/OnGoingProgramLoadZohoDao.php';
+        $onGoingProgramLoadZohoDao = new OnGoingProgramLoadZohoDao($this->getZohoClient());
+        
+        $mapper = new OnGoingProgramLoadMapper();
+        $mapper->setOnGoingProgramLoad($OnGoingProgramLoadArr);
+        
+        $zohoSynchronizer = new ZohoSynchronizer($onGoingProgramLoadZohoDao, $mapper);
+        $zohoSynchronizer->sendAppBeansToZoho(); */
 
     }
 }

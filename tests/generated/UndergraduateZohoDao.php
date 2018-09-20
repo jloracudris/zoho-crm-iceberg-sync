@@ -367,34 +367,6 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setOtherPhone',
 		      'name' => 'otherPhone',
 		    ),
-		    'Skype ID' => 
-		    array (
-		      'req' => false,
-		      'type' => 'Text',
-		      'isreadonly' => false,
-		      'maxlength' => 50,
-		      'label' => 'Skype ID',
-		      'dv' => 'ID de Skype',
-		      'customfield' => false,
-		      'phpType' => 'string',
-		      'getter' => 'getSkypeID',
-		      'setter' => 'setSkypeID',
-		      'name' => 'skypeID',
-		    ),
-		    'Twitter' => 
-		    array (
-		      'req' => false,
-		      'type' => 'Text',
-		      'isreadonly' => false,
-		      'maxlength' => 50,
-		      'label' => 'Twitter',
-		      'dv' => 'Twitter',
-		      'customfield' => false,
-		      'phpType' => 'string',
-		      'getter' => 'getTwitter',
-		      'setter' => 'setTwitter',
-		      'name' => 'twitter',
-		    ),
 		    'Email Opt Out' => 
 		    array (
 		      'req' => false,

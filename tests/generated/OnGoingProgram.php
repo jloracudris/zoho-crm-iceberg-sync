@@ -37,14 +37,25 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Zoho field Current Academic Period
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 6
+	 * Max length: 120
 	 * Custom field: true
 	 *
 	 * @var string
 	 */
 	protected $currentAcademicPeriod;
+
+	/**
+	 * Zoho field Current Academic Period_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $currentAcademicPeriodID;
 
 	/**
 	 * Zoho field CustomModule4 Name
@@ -119,6 +130,13 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtyCurrentAcademicPeriod = false;
 
 	/**
+	 * Whether 'currentAcademicPeriodID' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyCurrentAcademicPeriodID = false;
+
+	/**
 	 * Whether 'customModule4Name' has been changed or not.
 	 *
 	 * @var bool
@@ -154,6 +172,13 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtyJornada = false;
 
 	/**
+	 * Whether 'jornadaID' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyJornadaID = false;
+
+	/**
 	 * Whether 'lastActivityTime' has been changed or not.
 	 *
 	 * @var bool
@@ -173,6 +198,13 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyLocation = false;
+
+	/**
+	 * Whether 'locationID' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyLocationID = false;
 
 	/**
 	 * Whether 'modifiedBy' has been changed or not.
@@ -225,14 +257,25 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Zoho field Jornada
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 255
+	 * Max length: 120
 	 * Custom field: true
 	 *
 	 * @var string
 	 */
 	protected $jornada;
+
+	/**
+	 * Zoho field Jornada_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $jornadaID;
 
 	/**
 	 * Zoho field Last Activity Time
@@ -255,14 +298,25 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Zoho field Location
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 255
+	 * Max length: 120
 	 * Custom field: true
 	 *
 	 * @var string
 	 */
 	protected $location;
+
+	/**
+	 * Zoho field Location_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $locationID;
 
 	/**
 	 * Zoho field Modified By
@@ -372,13 +426,24 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Get zoho field Current Academic Period
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 6
+	 * Max length: 120
 	 * Custom field: true
 	 */
 	public function getCurrentAcademicPeriod() {
 		return $this->currentAcademicPeriod;
+	}
+
+	/**
+	 * Get zoho field Current Academic Period_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 */
+	public function getCurrentAcademicPeriodID() {
+		return $this->currentAcademicPeriodID;
 	}
 
 	/**
@@ -427,13 +492,24 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Get zoho field Jornada
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 255
+	 * Max length: 120
 	 * Custom field: true
 	 */
 	public function getJornada() {
 		return $this->jornada;
+	}
+
+	/**
+	 * Get zoho field Jornada_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 */
+	public function getJornadaID() {
+		return $this->jornadaID;
 	}
 
 	/**
@@ -457,13 +533,24 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Get zoho field Location
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 255
+	 * Max length: 120
 	 * Custom field: true
 	 */
 	public function getLocation() {
 		return $this->location;
+	}
+
+	/**
+	 * Get zoho field Location_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 */
+	public function getLocationID() {
+		return $this->locationID;
 	}
 
 	/**
@@ -592,9 +679,9 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Set zoho field Current Academic Period
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 6
+	 * Max length: 120
 	 * Custom field: true
 	 *
 	 * @param string $currentAcademicPeriod
@@ -602,6 +689,21 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setCurrentAcademicPeriod($currentAcademicPeriod) {
 		$this->currentAcademicPeriod = $currentAcademicPeriod;
 		$this->dirtyCurrentAcademicPeriod = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Current Academic Period_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @param string $currentAcademicPeriodID
+	 */
+	public function setCurrentAcademicPeriodID($currentAcademicPeriodID) {
+		$this->currentAcademicPeriodID = $currentAcademicPeriodID;
+		$this->dirtyCurrentAcademicPeriodID = true;
 		return $this;
 	}
 
@@ -667,9 +769,9 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Set zoho field Jornada
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 255
+	 * Max length: 120
 	 * Custom field: true
 	 *
 	 * @param string $jornada
@@ -677,6 +779,21 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setJornada($jornada) {
 		$this->jornada = $jornada;
 		$this->dirtyJornada = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Jornada_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @param string $jornadaID
+	 */
+	public function setJornadaID($jornadaID) {
+		$this->jornadaID = $jornadaID;
+		$this->dirtyJornadaID = true;
 		return $this;
 	}
 
@@ -709,9 +826,9 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
 	 * Set zoho field Location
-	 * Type: Text
+	 * Type: Lookup
 	 * Read only: false
-	 * Max length: 255
+	 * Max length: 120
 	 * Custom field: true
 	 *
 	 * @param string $location
@@ -719,6 +836,21 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setLocation($location) {
 		$this->location = $location;
 		$this->dirtyLocation = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Location_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @param string $locationID
+	 */
+	public function setLocationID($locationID) {
+		$this->locationID = $locationID;
+		$this->dirtyLocationID = true;
 		return $this;
 	}
 

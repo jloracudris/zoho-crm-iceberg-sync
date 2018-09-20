@@ -6,7 +6,7 @@ namespace TestNamespace;
 class Location implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 
 	/**
-	 * Zoho field Campus Name
+	 * Zoho field Campus Code
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 255
@@ -14,7 +14,7 @@ class Location implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 *
 	 * @var string
 	 */
-	protected $campusName;
+	protected $campusCode;
 
 	/**
 	 * Zoho field Created By
@@ -69,11 +69,11 @@ class Location implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $customModule17Owner;
 
 	/**
-	 * Whether 'campusName' has been changed or not.
+	 * Whether 'campusCode' has been changed or not.
 	 *
 	 * @var bool
 	 */
-	protected $dirtyCampusName = false;
+	protected $dirtyCampusCode = false;
 
 	/**
 	 * Whether 'createdBy' has been changed or not.
@@ -215,14 +215,14 @@ class Location implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Get zoho field Campus Name
+	 * Get zoho field Campus Code
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 255
 	 * Custom field: true
 	 */
-	public function getCampusName() {
-		return $this->campusName;
+	public function getCampusCode() {
+		return $this->campusCode;
 	}
 
 	/**
@@ -346,17 +346,17 @@ class Location implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Set zoho field Campus Name
+	 * Set zoho field Campus Code
 	 * Type: Text
 	 * Read only: false
 	 * Max length: 255
 	 * Custom field: true
 	 *
-	 * @param string $campusName
+	 * @param string $campusCode
 	 */
-	public function setCampusName($campusName) {
-		$this->campusName = $campusName;
-		$this->dirtyCampusName = true;
+	public function setCampusCode($campusCode) {
+		$this->campusCode = $campusCode;
+		$this->dirtyCampusCode = true;
 		return $this;
 	}
 

@@ -2,29 +2,29 @@
 
 namespace Wabel\Zoho\CRM\Sync;
 
-use TestNamespace\Location;
+use TestNamespace\DegreeTypes;
 use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
 use Rees\Sanitizer\Sanitizer;
 
-class LocationMapper implements MappingInterface {
+class DegreeTypesMapper implements MappingInterface {
 
-    private $locations;
+    private $degreeTypes;
 
     /**
      * @return array
      */
-    public function getLocation()
+    public function getDegreeTypes()
     {
-        return $this->locations;
+        return $this->degreeTypes;
     }
 
     /**
      * @param array $Disabilities
      */
-    public function setLocations($locations)
+    public function setDegreeTypes($degreeTypes)
     {
-        $this->locations = $locations;
+        $this->degreeTypes = $degreeTypes;
     }
 
     /**
@@ -35,8 +35,8 @@ class LocationMapper implements MappingInterface {
      */
     public function toZohoBean($applicationBean)
     {
-        if (!$applicationBean instanceof LocationApplicationBean) {
-            throw new ZohoCRMException("Expected LocationsApplicationBean");
+        if (!$applicationBean instanceof DegreeTypesApplicationBean) {
+            throw new ZohoCRMException("Expected DegreeTypesApplicationBean");
         }
         $sanitizer = new Sanitizer;
         $input = [
@@ -50,9 +50,9 @@ class LocationMapper implements MappingInterface {
         $sanitizer->sanitize($rules, $input);
 
 
-        $zohoBean = new Location();
-        $zohoBean->setCampusCode($applicationBean->getCode());
-        $zohoBean->setCustomModule17Name($input['NAME']);     
+        $zohoBean = new DegreeTypes();
+        $zohoBean->setDegreeTypeName($input['NAME']);
+        $zohoBean->setCustomModule21Name($applicationBean->getCode());     
         $zohoBean->setZohoId($applicationBean->getZohoId());
         if ($applicationBean->getZohoLastModificationDate()) {
             $zohoBean->setModifiedTime($applicationBean->getZohoLastModificationDate());
@@ -69,12 +69,12 @@ class LocationMapper implements MappingInterface {
      */
     public function toApplicationBean(ZohoBeanInterface $zohoBean)
     {
-        if (!$zohoBean instanceof Location) {
-            throw new ZohoCRMException("Expected Location");
+        if (!$zohoBean instanceof DegreeTypes) {
+            throw new ZohoCRMException("Expected DegreeTypes");
         }
-        $applicationBean = new Location();
-        $applicationBean->setName($zohoBean->getCustomModule17Name());
-        $applicationBean->setCode($zohoBean->getCampusCode());
+        $applicationBean = new DegreeTypes();
+        $applicationBean->setName($zohoBean->getDegreeTypeName());
+        $applicationBean->setCode($zohoBean->getCustomModule21Name());
         $applicationBean->setZohoId($zohoBean->getZohoId());        
         $applicationBean->setZohoLastModificationDate($zohoBean->getModifiedTime());
 
@@ -89,8 +89,8 @@ class LocationMapper implements MappingInterface {
      */
     public function onSyncToZohoComplete($applicationBean, $zohoId, \DateTime $date = null)
     {
-        if (!$applicationBean instanceof LocationApplicationBean) {
-            throw new ZohoCRMException("Expected LocationApplicationBean");
+        if (!$applicationBean instanceof DegreeTypesApplicationBean) {
+            throw new ZohoCRMException("Expected DegreeTypesApplicationBean");
         }
         $applicationBean->setZohoId($zohoId);
         $applicationBean->setZohoLastModificationDate($date);
@@ -103,7 +103,7 @@ class LocationMapper implements MappingInterface {
      */
     public function getBeansToSynchronize()
     {
-        return $this->locations;
+        return $this->degreeTypes;
     }
 
     /**

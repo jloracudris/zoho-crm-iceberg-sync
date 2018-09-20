@@ -12,7 +12,7 @@ class OnGoingProgramApplicationBean {
     private $location;
     private $type;
     private $idNumber;
-    private $bannerStudentId;
+    private $bannerStudentId;    
     private $zohoId;
     private $zohoLastModificationDate;
 

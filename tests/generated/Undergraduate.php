@@ -659,25 +659,11 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtySecondSurname = false;
 
 	/**
-	 * Whether 'skypeID' has been changed or not.
-	 *
-	 * @var bool
-	 */
-	protected $dirtySkypeID = false;
-
-	/**
 	 * Whether 'tag' has been changed or not.
 	 *
 	 * @var bool
 	 */
 	protected $dirtyTag = false;
-
-	/**
-	 * Whether 'twitter' has been changed or not.
-	 *
-	 * @var bool
-	 */
-	protected $dirtyTwitter = false;
 
 	/**
 	 * Whether 'visitorScore' has been changed or not.
@@ -1040,17 +1026,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $secondSurname;
 
 	/**
-	 * Zoho field Skype ID
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 50
-	 * Custom field: false
-	 *
-	 * @var string
-	 */
-	protected $skypeID;
-
-	/**
 	 * Zoho field Tag
 	 * Type: Text
 	 * Read only: false
@@ -1060,17 +1035,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var string
 	 */
 	protected $tag;
-
-	/**
-	 * Zoho field Twitter
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 50
-	 * Custom field: false
-	 *
-	 * @var string
-	 */
-	protected $twitter;
 
 	/**
 	 * Zoho field Visitor Score
@@ -1704,17 +1668,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Get zoho field Skype ID
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 50
-	 * Custom field: false
-	 */
-	public function getSkypeID() {
-		return $this->skypeID;
-	}
-
-	/**
 	 * Get zoho field Tag
 	 * Type: Text
 	 * Read only: false
@@ -1723,17 +1676,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 */
 	public function getTag() {
 		return $this->tag;
-	}
-
-	/**
-	 * Get zoho field Twitter
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 50
-	 * Custom field: false
-	 */
-	public function getTwitter() {
-		return $this->twitter;
 	}
 
 	/**
@@ -2598,21 +2540,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
-	 * Set zoho field Skype ID
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 50
-	 * Custom field: false
-	 *
-	 * @param string $skypeID
-	 */
-	public function setSkypeID($skypeID) {
-		$this->skypeID = $skypeID;
-		$this->dirtySkypeID = true;
-		return $this;
-	}
-
-	/**
 	 * Set zoho field Tag
 	 * Type: Text
 	 * Read only: false
@@ -2624,21 +2551,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setTag($tag) {
 		$this->tag = $tag;
 		$this->dirtyTag = true;
-		return $this;
-	}
-
-	/**
-	 * Set zoho field Twitter
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 50
-	 * Custom field: false
-	 *
-	 * @param string $twitter
-	 */
-	public function setTwitter($twitter) {
-		$this->twitter = $twitter;
-		$this->dirtyTwitter = true;
 		return $this;
 	}
 

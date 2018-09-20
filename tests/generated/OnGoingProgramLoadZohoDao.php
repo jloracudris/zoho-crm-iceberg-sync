@@ -3,61 +3,61 @@ namespace TestNamespace;
 
 /**
  */
-class JornadaZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
+class OnGoingProgramLoadZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 
 	/**
 	 */
 	public function getBeanClassName() {
-		return 'TestNamespace\\Jornada';
+		return 'TestNamespace\\OnGoingProgramLoad';
 	}
 
 	/**
 	 */
 	public function getFields() {
 		return array (
-		  'CustomModule19 Information' => 
+		  'CustomModule22 Information' => 
 		  array (
-		    'Jornada Code' => 
+		    'CustomModule22 Name' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
-		      'label' => 'Jornada Code',
-		      'dv' => 'Jornada Code',
-		      'customfield' => true,
+		      'maxlength' => 120,
+		      'label' => 'CustomModule22 Name',
+		      'dv' => 'Ongoing Program Load Code',
+		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getJornadaCode',
-		      'setter' => 'setJornadaCode',
-		      'name' => 'jornadaCode',
+		      'getter' => 'getCustomModule22Name',
+		      'setter' => 'setCustomModule22Name',
+		      'name' => 'customModule22Name',
 		    ),
-		    'CustomModule19 Owner' => 
+		    'CustomModule22 Owner' => 
 		    array (
 		      'req' => false,
 		      'type' => 'Lookup',
 		      'isreadonly' => false,
 		      'maxlength' => 120,
-		      'label' => 'CustomModule19 Owner',
-		      'dv' => 'Jornada Propietario',
+		      'label' => 'CustomModule22 Owner',
+		      'dv' => 'Ongoing Program Load Propietario',
 		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule19Owner',
-		      'setter' => 'setCustomModule19Owner',
-		      'name' => 'customModule19Owner',
+		      'getter' => 'getCustomModule22Owner',
+		      'setter' => 'setCustomModule22Owner',
+		      'name' => 'customModule22Owner',
 		    ),
-		    'CustomModule19 Name' => 
+		    'Ongoing Program Load Name' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 120,
-		      'label' => 'CustomModule19 Name',
-		      'dv' => 'Nombre de Jornada',
-		      'customfield' => false,
+		      'maxlength' => 255,
+		      'label' => 'Ongoing Program Load Name',
+		      'dv' => 'Ongoing Program Load Name',
+		      'customfield' => true,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule19Name',
-		      'setter' => 'setCustomModule19Name',
-		      'name' => 'customModule19Name',
+		      'getter' => 'getOngoingProgramLoadName',
+		      'setter' => 'setOngoingProgramLoadName',
+		      'name' => 'ongoingProgramLoadName',
 		    ),
 		    'Created By' => 
 		    array (
@@ -168,18 +168,18 @@ class JornadaZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 	/**
 	 */
 	public function getModule() {
-		return 'CustomModule19';
+		return 'CustomModule22';
 	}
 
 	/**
 	 */
 	public function getPluralModuleName() {
-		return 'Jornadas';
+		return 'OnGoingProgramLoad';
 	}
 
 	/**
 	 */
 	public function getSingularModuleName() {
-		return 'Jornada';
+		return 'OnGoingProgramLoad';
 	}
 }
