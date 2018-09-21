@@ -2,13 +2,13 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\FacultyZohoDao;
+use TestNamespace\AccountZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
+class AccountMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -46,22 +46,22 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
-        $faculties = [];
-        foreach ($getAllFaculties as $key  => $value) {                        
-            $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
-            array_push($faculties, $newFacultyEl);            
+        $getAccounts = $conn->fetchAll('select * from SATURN.STVTRCN');
+        $accountsArr = [];
+        foreach ($getAccounts as $key  => $value) {                        
+            $newAccountEl = new AccountApplicationBean(null, $value['STVTRCN_DESC'], $value['STVTRCN_CODE']);
+            array_push($accountsArr, $newAccountEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule7', 'Faculties', 'Faculty', __DIR__.'/generated/', 'TestNamespace');
-        require __DIR__.'/generated/Faculty.php';
-        require __DIR__.'/generated/FacultyZohoDao.php';
-        $facultyZohoDao = new FacultyZohoDao($this->getZohoClient());
-        
-        $mapper = new FacultyMapper();
-        $mapper->setFaculties($faculties);
-        
-        $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $generator->generateModule('Accounts', 'Accounts', 'Account', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/Account.php';
+        require __DIR__.'/generated/AccountZohoDao.php';
+        $accountZohoDao = new AccountZohoDao($this->getZohoClient());
+
+        $mapper = new AccountMapper();
+        $mapper->setAccounts($accountsArr);
+
+        $zohoSynchronizer = new ZohoSynchronizer($accountZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
     }
 }

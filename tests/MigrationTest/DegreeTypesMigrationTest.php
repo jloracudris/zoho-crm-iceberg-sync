@@ -2,13 +2,13 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\FacultyZohoDao;
+use TestNamespace\DegreeTypesZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
+class DegreeTypesMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -46,22 +46,22 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
-        $faculties = [];
-        foreach ($getAllFaculties as $key  => $value) {                        
-            $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
-            array_push($faculties, $newFacultyEl);            
+        $getAllDegreeTypes = $conn->fetchAll('select * from SATURN.STVLEVL');
+        $degreeTypesArr = [];
+        foreach ($getAllDegreeTypes as $key  => $value) {                        
+            $newDegreeTypeEl = new DegreeTypesApplicationBean(null, $value['STVLEVL_DESC'], $value['STVLEVL_CODE']);
+            array_push($degreeTypesArr, $newDegreeTypeEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule7', 'Faculties', 'Faculty', __DIR__.'/generated/', 'TestNamespace');
-        require __DIR__.'/generated/Faculty.php';
-        require __DIR__.'/generated/FacultyZohoDao.php';
-        $facultyZohoDao = new FacultyZohoDao($this->getZohoClient());
+        $generator->generateModule('CustomModule21', 'DegreeTypes', 'DegreeTypes', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/DegreeTypes.php';
+        require __DIR__.'/generated/DegreeTypesZohoDao.php';
+        $degreeTypeZohoDao = new DegreeTypesZohoDao($this->getZohoClient());
         
-        $mapper = new FacultyMapper();
-        $mapper->setFaculties($faculties);
+        $mapper = new  DegreeTypesMapper();
+        $mapper->setDegreeTypes($degreeTypesArr);
         
-        $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $zohoSynchronizer = new ZohoSynchronizer($degreeTypeZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
     }
 }

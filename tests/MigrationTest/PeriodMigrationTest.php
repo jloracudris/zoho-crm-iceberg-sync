@@ -2,13 +2,13 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\FacultyZohoDao;
+use TestNamespace\PeriodZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
+class PeriodMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -46,22 +46,22 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
-        $faculties = [];
-        foreach ($getAllFaculties as $key  => $value) {                        
-            $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
-            array_push($faculties, $newFacultyEl);            
+        $getPeriods = $conn->fetchAll('select DESCRIPCION, CODIGO, TO_CHAR(INICIO, \'yyyy-mm-dd\') as INICIO, TO_CHAR(FIN, \'yyyy-mm-dd\') as FIN, AÑO as YEAR from  SIUP.V_PERIODOS order by inicio');
+        $periodsArr = [];
+        foreach ($getPeriods as $key  => $value) {                        
+            $newPeriodEl = new PeriodApplicationBean(null, $value['DESCRIPCION'], $value['CODIGO'], new DateTime($value['INICIO']), new DateTime($value['FIN']), $value['YEAR']);
+            array_push($periodsArr, $newPeriodEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule7', 'Faculties', 'Faculty', __DIR__.'/generated/', 'TestNamespace');
-        require __DIR__.'/generated/Faculty.php';
-        require __DIR__.'/generated/FacultyZohoDao.php';
-        $facultyZohoDao = new FacultyZohoDao($this->getZohoClient());
-        
-        $mapper = new FacultyMapper();
-        $mapper->setFaculties($faculties);
-        
-        $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $generator->generateModule('CustomModule16', 'Periods', 'Period', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/Period.php';
+        require __DIR__.'/generated/PeriodZohoDao.php';
+        $periodZohoDao = new PeriodZohoDao($this->getZohoClient());
+
+        $mapper = new PeriodMapper();
+        $mapper->setPeriods($periodsArr);
+
+        $zohoSynchronizer = new ZohoSynchronizer($periodZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
     }
 }

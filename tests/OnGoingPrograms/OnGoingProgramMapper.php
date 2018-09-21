@@ -140,7 +140,7 @@ class OnGoingProgramMapper implements MappingInterface {
             $zohoBean->setCurrentAcademicPeriodID($periodZohoId);
         }
         
-        /* $zohoBean->setEnabled($input["ESTADO"]); */
+        $zohoBean->setEnabled("1");
         if ($jornadaZohoId != null) {
             $zohoBean->setJornadaID($jornadaZohoId);
         }

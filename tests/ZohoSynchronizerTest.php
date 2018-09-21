@@ -164,21 +164,14 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
 
         // Create a new sanitizer instance by passing an array of rules to the `Sanitizer::make` method...
 
-        $getVmatriculas = $conn->fetchAll('SELECT PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
+        /* $getVmatriculas = $conn->fetchAll('SELECT DISTINCT
+                                                PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
                                                 SEGUNDO_APELLIDO, IDENTIFICACION, GENERO, TO_CHAR(TO_DATE(FECHA_NACIMIENTO,\'DD/MM/YYYY\'), \'yyyy-mm-dd\') as FECHA , 
                                                 TIPODOCUMENTO, EMAIL_PERSONAL, EMAIL_INSTITUCIONAL, CELULAR, TELEFONO, DIRECCION, CODCIUDAD
                                                 FROM baninst1.V_MATRICULADOS
-                                                WHERE ROWNUM <= 100 
-                                                ORDER BY IDBANNER');        
-            
-        $VMatriculasArr = [];
-        foreach ($getVmatriculas as $key  => $value) {                        
-            $newStudentEl = new UndergraduateApplicationBean(null, $value['PRIMER_NOMBRE'], 
-            $value['SEGUNDO_NOMBRE'], $value['PRIMER_APELLIDO'], $value['SEGUNDO_APELLIDO'], $value['TIPODOCUMENTO'], 
-            $value['IDENTIFICACION'], $value['GENERO'], $value['FECHA'], $value['EMAIL_PERSONAL'], $value['EMAIL_INSTITUCIONAL'], 
-            $value['CELULAR'], $value['TELEFONO'], $value['DIRECCION'], $value['CODCIUDAD'], '3229357000001414049');
-            array_push($VMatriculasArr, $newStudentEl);            
-        }        
+                                                WHERE ROWNUM <= 500');
+        $chunks = array_chunk($getVmatriculas, 100);
+
         $generator = $this->getEntitiesGeneratorService();
         $generator->generateModule('Contacts', 'Undergraduates', 'Undergraduate', __DIR__.'/generated/', 'TestNamespace');
         $generator->generateModule('CustomModule12', 'Cities', 'City', __DIR__.'/generated/', 'TestNamespace');
@@ -187,13 +180,27 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         require __DIR__.'/generated/UndergraduateZohoDao.php';
         require __DIR__.'/generated/City.php';
         require __DIR__.'/generated/CityZohoDao.php';
-        $undergraduateZohoDao = new UndergraduateZohoDao($this->getZohoClient());
+
         
-        $mapper = new UndergraduateMapper();
-        $mapper->setUndergraduate($VMatriculasArr);
+
+        foreach ($chunks as $key => $chunk) {
+            $VMatriculasArr = [];
+            foreach ($chunk as $key  => $value) {                        
+                $newStudentEl = new UndergraduateApplicationBean(null, $value['PRIMER_NOMBRE'], 
+                $value['SEGUNDO_NOMBRE'], $value['PRIMER_APELLIDO'], $value['SEGUNDO_APELLIDO'], $value['TIPODOCUMENTO'], 
+                $value['IDENTIFICACION'], $value['GENERO'], $value['FECHA'], $value['EMAIL_PERSONAL'], $value['EMAIL_INSTITUCIONAL'], 
+                $value['CELULAR'], $value['TELEFONO'], $value['DIRECCION'], $value['CODCIUDAD'], '3229357000001414049');
+                array_push($VMatriculasArr, $newStudentEl);            
+            }
+
+            $undergraduateZohoDao = new UndergraduateZohoDao($this->getZohoClient());
+            $mapper = new UndergraduateMapper();
+            $mapper->setUndergraduate($VMatriculasArr);            
+            $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
+            $zohoSynchronizer->sendAppBeansToZoho();
+        }    */
         
-        $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho();
+        
 
         /* End Students */
 
@@ -274,12 +281,9 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer->sendAppBeansToZoho(); */
 
         /* $getOnGoingProgram = $conn->fetchAll('select CODPROGRAMA, PERIODO, ESTADO, JORNADA, SEDE, TIPOESTUDIANTE, IDENTIFICACION, IDBANNER FROM baninst1.V_MATRICULADOS 
-                                              WHERE ROWNUM <= 5 ORDER BY IDBANNER');
-        $onGoingProgramArr = [];
-        foreach ($getOnGoingProgram as $key  => $value) {                        
-            $newOngoingEl = new OnGoingProgramApplicationBean(null, null, $value['PERIODO'], $value['ESTADO'], $value['JORNADA'] , $value['CODPROGRAMA'], $value['SEDE'] , $value['TIPOESTUDIANTE'], $value['IDENTIFICACION'], $value['IDBANNER']);
-            array_push($onGoingProgramArr, $newOngoingEl);            
-        }        
+                                              WHERE ROWNUM <= 5');
+       
+        $chunks = array_chunk($getOnGoingProgram, 100);
         $generator = $this->getEntitiesGeneratorService();
         $generator->generateModule('CustomModule4', 'OngoingPrograms', 'OnGoingProgram', __DIR__.'/generated/', 'TestNamespace');
         
@@ -295,14 +299,21 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         require __DIR__.'/generated/LocationZohoDao.php';
         require __DIR__.'/generated/Jornada.php';
         require __DIR__.'/generated/JornadaZohoDao.php';
-        $onGoingProgramZohoDao = new OnGoingProgramZohoDao($this->getZohoClient());
 
-        $mapper = new OnGoingProgramMapper();
-        $mapper->setOnGoingProgram($onGoingProgramArr);
+        foreach ($chunks as $key => $chunk) {
+            $onGoingProgramArr = [];
+            foreach ($chunk as $key  => $value) {                        
+                $newOngoingEl = new OnGoingProgramApplicationBean(null, null, $value['PERIODO'], $value['ESTADO'], $value['JORNADA'] , $value['CODPROGRAMA'], $value['SEDE'] , $value['TIPOESTUDIANTE'], $value['IDENTIFICACION'], $value['IDBANNER']);
+                array_push($onGoingProgramArr, $newOngoingEl);            
+            }
+            
+            $onGoingProgramZohoDao = new OnGoingProgramZohoDao($this->getZohoClient());
+            $mapper = new OnGoingProgramMapper();
+            $mapper->setOnGoingProgram($onGoingProgramArr);
 
-        $zohoSynchronizer = new ZohoSynchronizer($onGoingProgramZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho(); */
-
+            $zohoSynchronizer = new ZohoSynchronizer($onGoingProgramZohoDao, $mapper);
+            $zohoSynchronizer->sendAppBeansToZoho();
+        } */
 
         /* $getLocations = $conn->fetchAll('select * from SATURN.STVCAMP');
         $locationsArr = [];
@@ -440,14 +451,14 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer = new ZohoSynchronizer($degreeTypeZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho(); */
 
-        /* $getAllOnGoingProgramLoad = $conn->fetchAll('SELECT * FROM SATURN.STVATTS WHERE STVATTS_DESC like (\'%CARGA%\')');
+        $getAllOnGoingProgramLoad = $conn->fetchAll('SELECT * FROM SATURN.STVATTS WHERE STVATTS_DESC like (\'%CARGA%\')');
         $OnGoingProgramLoadArr = [];
         foreach ($getAllOnGoingProgramLoad as $key  => $value) {                        
             $newOnGoPloadEl = new OnGoingProgramLoadApplicationBean(null, $value['STVATTS_DESC'], $value['STVATTS_CODE']);
             array_push($OnGoingProgramLoadArr, $newOnGoPloadEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule22', 'OnGoingProgramLoad', 'OnGoingProgramLoad', __DIR__.'/generated/', 'TestNamespace');
+        /* $generator->generateModule('CustomModule22', 'OnGoingProgramLoad', 'OnGoingProgramLoad', __DIR__.'/generated/', 'TestNamespace'); */
         require __DIR__.'/generated/OnGoingProgramLoad.php';
         require __DIR__.'/generated/OnGoingProgramLoadZohoDao.php';
         $onGoingProgramLoadZohoDao = new OnGoingProgramLoadZohoDao($this->getZohoClient());
@@ -456,7 +467,7 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $mapper->setOnGoingProgramLoad($OnGoingProgramLoadArr);
         
         $zohoSynchronizer = new ZohoSynchronizer($onGoingProgramLoadZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho(); */
+        $zohoSynchronizer->sendAppBeansToZoho();
 
     }
 }

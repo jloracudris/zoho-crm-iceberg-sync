@@ -2,13 +2,13 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\FacultyZohoDao;
+use TestNamespace\DisabilitiesZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
+class DisabilitiesMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -46,22 +46,24 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
-        $faculties = [];
-        foreach ($getAllFaculties as $key  => $value) {                        
-            $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
-            array_push($faculties, $newFacultyEl);            
+        $getAllDisabilities = $conn->fetchAll('select * FROM V_PARAMETROS
+                                            WHERE
+                                            TABLA = ?', array('TIPO_DE_DISCAPACIDAD'));
+        $disabilitiesArr = [];
+        foreach ($getAllDisabilities as $key  => $value) {                        
+            $newDisabilyEl = new DisabilitiesApplicationBean(null, $value['DESCRIPCION'], $value['CODIGO']);
+            array_push($disabilitiesArr, $newDisabilyEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule7', 'Faculties', 'Faculty', __DIR__.'/generated/', 'TestNamespace');
-        require __DIR__.'/generated/Faculty.php';
-        require __DIR__.'/generated/FacultyZohoDao.php';
-        $facultyZohoDao = new FacultyZohoDao($this->getZohoClient());
+        $generator->generateModule('CustomModule10', 'Disabilities', 'Disability', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/Disability.php';
+        require __DIR__.'/generated/DisabilityZohoDao.php';
+        $disabilitiesZohoDao = new DisabilityZohoDao($this->getZohoClient());
         
-        $mapper = new FacultyMapper();
-        $mapper->setFaculties($faculties);
+        $mapper = new  DisabilitiesMapper();
+        $mapper->setDisabilities($disabilitiesArr);
         
-        $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $zohoSynchronizer = new ZohoSynchronizer($disabilitiesZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
     }
 }

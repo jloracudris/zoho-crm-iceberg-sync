@@ -129,6 +129,20 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setLocation',
 		      'name' => 'location',
 		    ),
+		    'Enabled' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Boolean',
+		      'isreadonly' => false,
+		      'maxlength' => 3,
+		      'label' => 'Enabled',
+		      'dv' => 'Enabled',
+		      'customfield' => true,
+		      'phpType' => 'bool',
+		      'getter' => 'getEnabled',
+		      'setter' => 'setEnabled',
+		      'name' => 'enabled',
+		    ),
 		    'Last Activity Time' => 
 		    array (
 		      'req' => false,
@@ -142,6 +156,20 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'getter' => 'getLastActivityTime',
 		      'setter' => 'setLastActivityTime',
 		      'name' => 'lastActivityTime',
+		    ),
+		    'Created By' => 
+		    array (
+		      'req' => false,
+		      'type' => 'OwnerLookup',
+		      'isreadonly' => false,
+		      'maxlength' => 25,
+		      'label' => 'Created By',
+		      'dv' => 'Creado por',
+		      'customfield' => false,
+		      'phpType' => 'string',
+		      'getter' => 'getCreatedBy',
+		      'setter' => 'setCreatedBy',
+		      'name' => 'createdBy',
 		    ),
 		    'Currency' => 
 		    array (
@@ -160,20 +188,6 @@ class OnGoingProgramZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'getter' => 'getCurrency',
 		      'setter' => 'setCurrency',
 		      'name' => 'currency',
-		    ),
-		    'Created By' => 
-		    array (
-		      'req' => false,
-		      'type' => 'OwnerLookup',
-		      'isreadonly' => false,
-		      'maxlength' => 25,
-		      'label' => 'Created By',
-		      'dv' => 'Creado por',
-		      'customfield' => false,
-		      'phpType' => 'string',
-		      'getter' => 'getCreatedBy',
-		      'setter' => 'setCreatedBy',
-		      'name' => 'createdBy',
 		    ),
 		    'Modified By' => 
 		    array (

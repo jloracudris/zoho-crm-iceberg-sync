@@ -2,13 +2,13 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\FacultyZohoDao;
+use TestNamespace\AgreementZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
+class AgreementMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -46,22 +46,22 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
-        $faculties = [];
-        foreach ($getAllFaculties as $key  => $value) {                        
-            $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
-            array_push($faculties, $newFacultyEl);            
+        $getAgreement = $conn->fetchAll('select * FROM CONVENIOS_BANNER');
+        $agreementsArr = [];
+        foreach ($getAgreement as $key  => $value) {                        
+            $newagrrEl = new AgreementApplicationBean(null, $value['NOMBRE'], $value['CODIGO']);
+            array_push($agreementsArr, $newagrrEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule7', 'Faculties', 'Faculty', __DIR__.'/generated/', 'TestNamespace');
-        require __DIR__.'/generated/Faculty.php';
-        require __DIR__.'/generated/FacultyZohoDao.php';
-        $facultyZohoDao = new FacultyZohoDao($this->getZohoClient());
-        
-        $mapper = new FacultyMapper();
-        $mapper->setFaculties($faculties);
-        
-        $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $generator->generateModule('CustomModule14', 'Agreements', 'Agreement', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/Agreement.php';
+        require __DIR__.'/generated/AgreementZohoDao.php';
+        $agreementZohoDao = new AgreementZohoDao($this->getZohoClient());
+
+        $mapper = new AgreementMapper();
+        $mapper->setAgreement($agreementsArr);
+
+        $zohoSynchronizer = new ZohoSynchronizer($agreementZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
     }
 }

@@ -165,6 +165,13 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $dirtyDegreeID = false;
 
 	/**
+	 * Whether 'enabled' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyEnabled = false;
+
+	/**
 	 * Whether 'jornada' has been changed or not.
 	 *
 	 * @var bool
@@ -254,6 +261,17 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyZohoId = false;
+
+	/**
+	 * Zoho field Enabled
+	 * Type: Boolean
+	 * Read only: false
+	 * Max length: 3
+	 * Custom field: true
+	 *
+	 * @var bool
+	 */
+	protected $enabled;
 
 	/**
 	 * Zoho field Jornada
@@ -488,6 +506,17 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 */
 	public function getDegreeID() {
 		return $this->degreeID;
+	}
+
+	/**
+	 * Get zoho field Enabled
+	 * Type: Boolean
+	 * Read only: false
+	 * Max length: 3
+	 * Custom field: true
+	 */
+	public function getEnabled() {
+		return $this->enabled;
 	}
 
 	/**
@@ -764,6 +793,21 @@ class OnGoingProgram implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setDegreeID($degreeID) {
 		$this->degreeID = $degreeID;
 		$this->dirtyDegreeID = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Enabled
+	 * Type: Boolean
+	 * Read only: false
+	 * Max length: 3
+	 * Custom field: true
+	 *
+	 * @param bool $enabled
+	 */
+	public function setEnabled($enabled) {
+		$this->enabled = $enabled;
+		$this->dirtyEnabled = true;
 		return $this;
 	}
 

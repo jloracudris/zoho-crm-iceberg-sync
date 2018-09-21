@@ -2,13 +2,13 @@
 namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\FacultyZohoDao;
+use TestNamespace\LocationZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
+class LocationMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -46,22 +46,22 @@ class FacultyMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getAllFaculties = $conn->fetchAll('select * from FACULTADES');                
-        $faculties = [];
-        foreach ($getAllFaculties as $key  => $value) {                        
-            $newFacultyEl = new FacultyApplicationBean($value['ID_FACULTAD'], $value['NOMBRE'], $value['COD_FACULTAD'], $value['DESCRIPCION']);
-            array_push($faculties, $newFacultyEl);            
+        $getLocations = $conn->fetchAll('select * from SATURN.STVCAMP');
+        $locationsArr = [];
+        foreach ($getLocations as $key  => $value) {                        
+            $newLocationEl = new LocationApplicationBean(null, $value['STVCAMP_DESC'], $value['STVCAMP_CODE']);
+            array_push($locationsArr, $newLocationEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        $generator->generateModule('CustomModule7', 'Faculties', 'Faculty', __DIR__.'/generated/', 'TestNamespace');
-        require __DIR__.'/generated/Faculty.php';
-        require __DIR__.'/generated/FacultyZohoDao.php';
-        $facultyZohoDao = new FacultyZohoDao($this->getZohoClient());
-        
-        $mapper = new FacultyMapper();
-        $mapper->setFaculties($faculties);
-        
-        $zohoSynchronizer = new ZohoSynchronizer($facultyZohoDao, $mapper);
+        $generator->generateModule('CustomModule17', 'Locations', 'Location', __DIR__.'/generated/', 'TestNamespace');
+        require __DIR__.'/generated/Location.php';
+        require __DIR__.'/generated/LocationZohoDao.php';
+        $locationZohoDao = new LocationZohoDao($this->getZohoClient());
+
+        $mapper = new LocationMapper();
+        $mapper->setLocations($locationsArr);
+
+        $zohoSynchronizer = new ZohoSynchronizer($locationZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho();
     }
 }

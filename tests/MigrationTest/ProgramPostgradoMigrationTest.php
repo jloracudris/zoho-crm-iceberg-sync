@@ -1,18 +1,14 @@
 <?php
-/* namespace Wabel\Zoho\CRM\Sync;
-
-require 'tests/Program/ProgramApplicationBean.php';
-require 'tests/Program/ProgramMapper.php';
-
+namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
-use TestNamespace\ProgramZohoDao;
+use TestNamespace\JornadaZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
 use ArrayObject;
 
-class ProgramMigrationTest extends \PHPUnit_Framework_TestCase
+class ProgramPostgradoMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function getZohoClient()
@@ -55,10 +51,10 @@ class ProgramMigrationTest extends \PHPUnit_Framework_TestCase
                                             SIUP_PROGRAMAS P
                                             Inner join FACULTADES F ON P.COLL_IN = F.COD_FACULTAD
                                             WHERE
-                                            P.TIPO_PROGRAMA = ?', array('PREGRADO'));
+                                            P.TIPO_PROGRAMA = ?', array('POSTGRADO'));
         $prograsArr = [];
         foreach ($getAllPrograms as $key  => $value) {                        
-            $newProgramEl = new ProgramApplicationBean(null, $value['COD_PROGRAMA'], $value['DESC_PROGRAMA'], $value['NOMBRE']);
+            $newProgramEl = new ProgramApplicationBean(null, $value['COD_PROGRAMA'], $value['DESC_PROGRAMA'], $value['NOMBRE'], '3229357000001595537');
             array_push($prograsArr, $newProgramEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
@@ -71,6 +67,6 @@ class ProgramMigrationTest extends \PHPUnit_Framework_TestCase
         $mapper->setPrograms($prograsArr);
         
         $zohoSynchronizer = new ZohoSynchronizer($programZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho();    
+        $zohoSynchronizer->sendAppBeansToZoho();
     }
-} */
+}
