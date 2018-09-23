@@ -8,10 +8,12 @@ use Wabel\Zoho\CRM\Exception\ZohoCRMException;
 use Wabel\Zoho\CRM\ZohoBeanInterface;
 use Rees\Sanitizer\Sanitizer;
 use Wabel\Zoho\CRM\ZohoClient;
+use \ForceUTF8\Encoding;
 
 class UndergraduateMapper implements MappingInterface {
 
     private $undergraduate;
+    private $cities;
 
     /**
      * @return array
@@ -29,6 +31,19 @@ class UndergraduateMapper implements MappingInterface {
         $this->undergraduate = $undergraduate;
     }
 
+    public function getCities()
+    {
+        return $this->cities;
+    }
+
+    /**
+     * @param array $undergraduate
+     */
+    public function setCities($cities)
+    {
+        $this->cities = $cities;
+    }
+
     public function getZohoClient()
     {
         return new ZohoClient($GLOBALS['auth_token']);
@@ -42,6 +57,8 @@ class UndergraduateMapper implements MappingInterface {
      */
     public function toZohoBean($applicationBean)
     {
+        ini_set("default_charset", 'utf-8');
+
         if (!$applicationBean instanceof UndergraduateApplicationBean) {
             throw new ZohoCRMException("Expected UndergraduateApplicationBean");
         }
@@ -99,11 +116,13 @@ class UndergraduateMapper implements MappingInterface {
                 return $field;
         });
 
+        
+
         $input = [
-            'PRIMER_NOMBRE'  => htmlentities($applicationBean->getFirstName(), ENT_QUOTES, "UTF-8"),
-            'SEGUNDO_NOMBRE'  => htmlentities($applicationBean->getMiddleName(), ENT_QUOTES, "UTF-8"),
-            'PRIMER_APELLIDO'  => htmlentities($applicationBean->getLastName(), ENT_QUOTES, "UTF-8"),
-            'SEGUNDO_APELLIDO'  => $applicationBean->getSecondSurname() != null? htmlentities($applicationBean->getSecondSurname(), ENT_QUOTES, "UTF-8"): '',
+            'PRIMER_NOMBRE'  => Encoding::fixUTF8($applicationBean->getFirstName()),
+            'SEGUNDO_NOMBRE'  => Encoding::fixUTF8($applicationBean->getMiddleName()),
+            'PRIMER_APELLIDO'  => Encoding::fixUTF8($applicationBean->getLastName()),
+            'SEGUNDO_APELLIDO'  => Encoding::fixUTF8($applicationBean->getSecondSurname()),
             'EMAIL'  => $applicationBean->getEmail(),
             'NUMEROIDENTIFICACION' => $applicationBean->getIdentificationNumber(),
             'TIPOIDENTIFICACION' => $applicationBean->getIdentificationType(),
@@ -115,18 +134,18 @@ class UndergraduateMapper implements MappingInterface {
         ];
 
         $rules = [
-            'PRIMER_NOMBRE' => 'trim|strtolower|ucwords',
-            'SEGUNDO_NOMBRE' => 'trim|strtolower|ucwords',
-            'PRIMER_APELLIDO'  => 'trim|strtolower|ucwords',
-            'SEGUNDO_APELLIDO'  => 'trim|strtolower|ucwords',
+            'PRIMER_NOMBRE' => 'trim|mb_strtolower|ucwords',
+            'SEGUNDO_NOMBRE' => 'trim|mb_strtolower|ucwords',
+            'PRIMER_APELLIDO'  => 'trim|mb_strtolower|ucwords',
+            'SEGUNDO_APELLIDO'  => 'trim|mb_strtolower|ucwords',
             'EMAIL' => 'trim|checkEmail',
             'NUMEROIDENTIFICACION' => 'trim|onlyNumbersId',
             'TIPOIDENTIFICACION' => 'trim|idTypesValidation',
             'EMAILSECUNDARIO'  => 'trim|checkEmail',
             'CELULAR'  => 'trim|validateCellPhone',
             'TELEFONO'  => 'trim|validatePhone',
-            'DIRECCION'  => 'trim|strtolower|strtoupper|remove2Spaces',
-            'CIUDAD' => 'trim|strtolower|ucwords|citySanitize',
+            'DIRECCION'  => 'trim|mb_strtolower|strtoupper|remove2Spaces',
+            'CIUDAD' => 'trim|mb_strtolower|ucwords|citySanitize',
         ];
         
         
@@ -134,15 +153,15 @@ class UndergraduateMapper implements MappingInterface {
 
         $cityZohoId = null;
         if($input['CIUDAD'] != null) {
-            $cityZohoDao= new CityZohoDao($this->getZohoClient());
-            $cities = $cityZohoDao->searchRecords('(City Code:'.$input['CIUDAD'].')');        
+            $cities = $this->getCities();            
             if (count($cities) > 0) {
                 $getIndex = array_search($input["CIUDAD"], $cities);
                 $cityZohoId = $cities[$getIndex]->getZohoId();
             }
         }
         
-
+        
+        
         $zohoBean = new Undergraduate();
         $zohoBean->setFirstName($input['PRIMER_NOMBRE']);
         $zohoBean->setMiddleName($input['SEGUNDO_NOMBRE']);

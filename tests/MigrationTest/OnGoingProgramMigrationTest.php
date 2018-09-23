@@ -3,6 +3,11 @@ namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
 use TestNamespace\OnGoingProgramZohoDao;
+use TestNamespace\ProgramZohoDao;
+use TestNamespace\UndergraduateZohoDao;
+use TestNamespace\PeriodZohoDao;
+use TestNamespace\LocationZohoDao;
+use TestNamespace\JornadaZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
@@ -46,12 +51,16 @@ class OnGoingProgramMigrationTest extends \PHPUnit_Framework_TestCase
         $conn = $this->ConnectToDb();
         $conn->connect();
 
-        $getOnGoingProgram = $conn->fetchAll('select CODPROGRAMA, PERIODO, ESTADO, JORNADA, SEDE, TIPOESTUDIANTE, IDENTIFICACION, IDBANNER FROM baninst1.V_MATRICULADOS 
-                                              WHERE ROWNUM <= 5');
+        $getOnGoingProgram = $conn->fetchAll('select CODPROGRAMA, PERIODO, ESTADO, JORNADA, SEDE, TIPOESTUDIANTE, IDENTIFICACION, IDBANNER FROM baninst1.V_MATRICULADOS');
        
-        $chunks = array_chunk($getOnGoingProgram, 100);
+        $chunks = array_chunk($getOnGoingProgram, 1000);
         $generator = $this->getEntitiesGeneratorService();
         $generator->generateModule('CustomModule4', 'OngoingPrograms', 'OnGoingProgram', __DIR__.'/generated/', 'TestNamespace');
+        $generator->generateModule('Products', 'Programs', 'Program', __DIR__.'/generated/', 'TestNamespace');
+        $generator->generateModule('Contacts', 'Undergraduates', 'Undergraduate', __DIR__.'/generated/', 'TestNamespace');
+        $generator->generateModule('CustomModule16', 'Periods', 'Period', __DIR__.'/generated/', 'TestNamespace');
+        $generator->generateModule('CustomModule17', 'Locations', 'Location', __DIR__.'/generated/', 'TestNamespace');
+        $generator->generateModule('CustomModule19', 'Jornadas', 'Jornada', __DIR__.'/generated/', 'TestNamespace');
         
         require __DIR__.'/generated/OnGoingProgram.php';
         require __DIR__.'/generated/OnGoingProgramZohoDao.php';        
@@ -66,6 +75,21 @@ class OnGoingProgramMigrationTest extends \PHPUnit_Framework_TestCase
         require __DIR__.'/generated/Jornada.php';
         require __DIR__.'/generated/JornadaZohoDao.php';
 
+        $programZohoDao = new ProgramZohoDao($this->getZohoClient());
+        $arrayOfPrograms = $programZohoDao->getRecords();
+
+        $undergraduateZohoDao = new UndergraduateZohoDao($this->getZohoClient());
+        $arrayOfUndergraduates = $undergraduateZohoDao->getRecords();
+
+        $periodZohoDao = new PeriodZohoDao($this->getZohoClient());
+        $arrayOfPeriods = $periodZohoDao->getRecords();
+
+        $locationZohoDao = new LocationZohoDao($this->getZohoClient());
+        $arrayOfLocations = $locationZohoDao->getRecords();
+
+        $jornadaZohoDao = new JornadaZohoDao($this->getZohoClient());
+        $arrayOfJornadas = $jornadaZohoDao->getRecords();
+
         foreach ($chunks as $key => $chunk) {
             $onGoingProgramArr = [];
             foreach ($chunk as $key  => $value) {                        
@@ -76,6 +100,12 @@ class OnGoingProgramMigrationTest extends \PHPUnit_Framework_TestCase
             $onGoingProgramZohoDao = new OnGoingProgramZohoDao($this->getZohoClient());
             $mapper = new OnGoingProgramMapper();
             $mapper->setOnGoingProgram($onGoingProgramArr);
+            $mapper->setPrograms($arrayOfPrograms);
+            $mapper->setUndergraduates($arrayOfUndergraduates);
+            $mapper->setPeriods($arrayOfPeriods);
+            $mapper->setLocations($arrayOfLocations);
+            $mapper->setJornadas($arrayOfJornadas);
+            
 
             $zohoSynchronizer = new ZohoSynchronizer($onGoingProgramZohoDao, $mapper);
             $zohoSynchronizer->sendAppBeansToZoho();

@@ -3,6 +3,7 @@ namespace Wabel\Zoho\CRM\Sync;
 
 use Psr\Log\NullLogger;
 use TestNamespace\UndergraduateZohoDao;
+use TestNamespace\CityZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
@@ -34,7 +35,7 @@ class UndergraduateMigrationTest extends \PHPUnit_Framework_TestCase
             'host' => '172.16.15.111',
             'driver' => 'oci8',
             'port' => '1521',
-            'charset' => 'AL32UTF8',
+            'charset' => 'WE8MSWIN1252',
             'service' => true
         );
         return \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
@@ -50,8 +51,7 @@ class UndergraduateMigrationTest extends \PHPUnit_Framework_TestCase
                                                 PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
                                                 SEGUNDO_APELLIDO, IDENTIFICACION, GENERO, TO_CHAR(TO_DATE(FECHA_NACIMIENTO,\'DD/MM/YYYY\'), \'yyyy-mm-dd\') as FECHA , 
                                                 TIPODOCUMENTO, EMAIL_PERSONAL, EMAIL_INSTITUCIONAL, CELULAR, TELEFONO, DIRECCION, CODCIUDAD
-                                                FROM baninst1.V_MATRICULADOS
-                                                WHERE ROWNUM <= 500');
+                                                FROM baninst1.V_MATRICULADOS');
         $chunks = array_chunk($getVmatriculas, 100);
 
         $generator = $this->getEntitiesGeneratorService();
@@ -63,23 +63,33 @@ class UndergraduateMigrationTest extends \PHPUnit_Framework_TestCase
         require __DIR__.'/generated/City.php';
         require __DIR__.'/generated/CityZohoDao.php';
 
-        
+        $cityZohoDao= new CityZohoDao($this->getZohoClient());
+        $arrayOfCities = $cityZohoDao->getRecords();
 
         foreach ($chunks as $key => $chunk) {
             $VMatriculasArr = [];
-            foreach ($chunk as $key  => $value) {                        
-                $newStudentEl = new UndergraduateApplicationBean(null, $value['PRIMER_NOMBRE'], 
-                $value['SEGUNDO_NOMBRE'], $value['PRIMER_APELLIDO'], $value['SEGUNDO_APELLIDO'], $value['TIPODOCUMENTO'], 
-                $value['IDENTIFICACION'], $value['GENERO'], $value['FECHA'], $value['EMAIL_PERSONAL'], $value['EMAIL_INSTITUCIONAL'], 
-                $value['CELULAR'], $value['TELEFONO'], $value['DIRECCION'], $value['CODCIUDAD'], '3229357000001414049');
-                array_push($VMatriculasArr, $newStudentEl);            
+            try{
+                foreach ($chunk as $key  => $value) {  
+                    if ($value['PRIMER_APELLIDO'] != null ) {
+                        $newStudentEl = new UndergraduateApplicationBean(null, $value['PRIMER_NOMBRE'], 
+                        $value['SEGUNDO_NOMBRE'], $value['PRIMER_APELLIDO'], $value['SEGUNDO_APELLIDO'], $value['TIPODOCUMENTO'], 
+                        $value['IDENTIFICACION'], $value['GENERO'], $value['FECHA'], $value['EMAIL_PERSONAL'], $value['EMAIL_INSTITUCIONAL'], 
+                        $value['CELULAR'], $value['TELEFONO'], $value['DIRECCION'], $value['CODCIUDAD'], '3229357000001414049');                    
+                        array_push($VMatriculasArr, $newStudentEl);            
+                    }
+                }
+    
+                $undergraduateZohoDao = new UndergraduateZohoDao($this->getZohoClient());
+                $mapper = new UndergraduateMapper();
+                fwrite(STDERR, print_r($VMatriculasArr, TRUE));
+                $mapper->setUndergraduate($VMatriculasArr);            
+                $mapper->setCities($arrayOfCities);  
+                $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
+                $zohoSynchronizer->sendAppBeansToZoho();
+            } catch (Exception $e) {
+                continue;
             }
-
-            $undergraduateZohoDao = new UndergraduateZohoDao($this->getZohoClient());
-            $mapper = new UndergraduateMapper();
-            $mapper->setUndergraduate($VMatriculasArr);            
-            $zohoSynchronizer = new ZohoSynchronizer($undergraduateZohoDao, $mapper);
-            $zohoSynchronizer->sendAppBeansToZoho();
+            
         } 
     }
 }

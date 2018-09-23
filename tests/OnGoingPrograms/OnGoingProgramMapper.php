@@ -17,6 +17,11 @@ use Wabel\Zoho\CRM\Exception\ZohoCRMResponseException;
 class OnGoingProgramMapper implements MappingInterface {
 
     private $onGoingProgram;
+    private $programs;
+    private $undergraduates;
+    private $period;
+    private $location;
+    private $jornada;
 
     /**
      * @return array
@@ -32,6 +37,91 @@ class OnGoingProgramMapper implements MappingInterface {
     public function setOnGoingProgram($onGoingProgram)
     {
         $this->onGoingProgram = $onGoingProgram;
+    }
+
+    
+    /**
+     * @return array
+     */
+    public function getPrograms()
+    {
+        return $this->programs;
+    }
+
+    /**
+     * @param array $programs
+     */
+    public function setPrograms($programs)
+    {
+        $this->programs = $programs;
+    }
+
+    
+    /**
+     * @return array
+     */
+    public function getUndergraduates()
+    {
+        return $this->undergraduates;
+    }
+
+    /**
+     * @param array $programs
+     */
+    public function setUndergraduates($undergraduates)
+    {
+        $this->undergraduates = $undergraduates;
+    }
+
+    
+    /**
+     * @return array
+     */
+    public function getPeriods()
+    {
+        return $this->period;
+    }
+
+    /**
+     * @param array $programs
+     */
+    public function setPeriods($period)
+    {
+        $this->period = $period;
+    }
+
+    
+    /**
+     * @return array
+     */
+    public function getLocations()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param array $programs
+     */
+    public function setLocations($location)
+    {
+        $this->location = $location;
+    }
+
+    
+    /**
+     * @return array
+     */
+    public function getJornadas()
+    {
+        return $this->jornada;
+    }
+
+    /**
+     * @param array $programs
+     */
+    public function setJornadas($jornada)
+    {
+        $this->jornada = $jornada;
     }
 
     public function getZohoClient()
@@ -92,17 +182,15 @@ class OnGoingProgramMapper implements MappingInterface {
         
         
         $sanitizer->sanitize($rules, $input);
-        $zohoBean = new OnGoingProgram();
-        $programZohoDao = new ProgramZohoDao($this->getZohoClient());
-        $programs = $programZohoDao->searchRecords('(Product Code:'.$input["PRODUCT"].')');
+        $zohoBean = new OnGoingProgram();        
+        $programs = $this->getPrograms();
         $programZohoId = null;
         if (count($programs) > 0) {
             $getIndex = array_search($input["PRODUCT"], $programs);
             $programZohoId = $programs[$getIndex]->getZohoId();
         }
 
-        $undergraduatedZohoDao = new UndergraduateZohoDao($this->getZohoClient());
-        $students = $undergraduatedZohoDao->searchRecords('(Identification Number:'.$input["NUMEROIDENTIFICACION"].')');
+        $students = $this->getUndergraduates();
         $studentZohoId = null;
         if (count($students) > 0) {
             $getIndex = array_search($input["NUMEROIDENTIFICACION"], $students);
@@ -110,25 +198,22 @@ class OnGoingProgramMapper implements MappingInterface {
         }
 
         $periodZohoId = null;
-        $periodZohoDao = new PeriodZohoDao($this->getZohoClient());        
-        $fetchPeriods = $periodZohoDao->searchRecords('(CustomModule16 Name:'.$input["PERIODO"].')');        
+        $fetchPeriods = $this->getPeriods(); 
         if (count($fetchPeriods) > 0) {
             $getIndex = array_search($input["PERIODO"], $fetchPeriods);
             $periodZohoId = $fetchPeriods[$getIndex]->getZohoId();
         }
         
-        $locationZohoId = null;
-        $locationZohoDao = new LocationZohoDao($this->getZohoClient());
-        $locations = $locationZohoDao->searchRecords('(Campus Code:'.$applicationBean->getLocation().')');        
+        $locationZohoId = null;        
+        $locations = $this->getLocations(); 
         if (count($locations) > 0) {
             $getIndex = array_search($applicationBean->getLocation(), $locations);
             $locationZohoId = $locations[$getIndex]->getZohoId();
         }
 
         $jornadaZohoId = null;
-        if ($input["JORNADA"] != null) {
-            $jornadaZohoDao = new JornadaZohoDao($this->getZohoClient());
-            $jornadas = $jornadaZohoDao->searchRecords('(Jornada Code:'.$input["JORNADA"].')');        
+        if ($input["JORNADA"] != null) {            
+            $jornadas = $this->getJornadas(); 
             if (count($jornadas) > 0) {
                 $getIndex = array_search($input["JORNADA"], $jornadas);
                 $jornadaZohoId = $jornadas[$getIndex]->getZohoId();
@@ -140,7 +225,7 @@ class OnGoingProgramMapper implements MappingInterface {
             $zohoBean->setCurrentAcademicPeriodID($periodZohoId);
         }
         
-        $zohoBean->setEnabled("1");
+        /* $zohoBean->setEnabled("TRUE"); */
         if ($jornadaZohoId != null) {
             $zohoBean->setJornadaID($jornadaZohoId);
         }
