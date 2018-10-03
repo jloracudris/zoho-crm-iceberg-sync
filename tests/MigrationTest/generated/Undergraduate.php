@@ -94,17 +94,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $averageTimeSpentMinutes;
 
 	/**
-	 * Zoho field Box Folder ID
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 *
-	 * @var string
-	 */
-	protected $boxFolderID;
-
-	/**
 	 * Zoho field City
 	 * Type: Lookup
 	 * Read only: false
@@ -321,13 +310,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyAverageTimeSpentMinutes = false;
-
-	/**
-	 * Whether 'boxFolderID' has been changed or not.
-	 *
-	 * @var bool
-	 */
-	protected $dirtyBoxFolderID = false;
 
 	/**
 	 * Whether 'city' has been changed or not.
@@ -629,6 +611,20 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 * @var bool
 	 */
 	protected $dirtyReferrer = false;
+
+	/**
+	 * Whether 'region' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyRegion = false;
+
+	/**
+	 * Whether 'regionID' has been changed or not.
+	 *
+	 * @var bool
+	 */
+	protected $dirtyRegionID = false;
 
 	/**
 	 * Whether 'salutation' has been changed or not.
@@ -982,6 +978,28 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	protected $referrer;
 
 	/**
+	 * Zoho field Region
+	 * Type: Lookup
+	 * Read only: false
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $region;
+
+	/**
+	 * Zoho field Region_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @var string
+	 */
+	protected $regionID;
+
+	/**
 	 * Zoho field Salutation
 	 * Type: Pick List
 	 * Read only: false
@@ -1146,17 +1164,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	 */
 	public function getAverageTimeSpentMinutes() {
 		return $this->averageTimeSpentMinutes;
-	}
-
-	/**
-	 * Get zoho field Box Folder ID
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 */
-	public function getBoxFolderID() {
-		return $this->boxFolderID;
 	}
 
 	/**
@@ -1624,6 +1631,28 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	}
 
 	/**
+	 * Get zoho field Region
+	 * Type: Lookup
+	 * Read only: false
+	 * Max length: 120
+	 * Custom field: true
+	 */
+	public function getRegion() {
+		return $this->region;
+	}
+
+	/**
+	 * Get zoho field Region_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 */
+	public function getRegionID() {
+		return $this->regionID;
+	}
+
+	/**
 	 * Get zoho field Salutation
 	 * Type: Pick List
 	 * Read only: false
@@ -1825,21 +1854,6 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setAverageTimeSpentMinutes($averageTimeSpentMinutes) {
 		$this->averageTimeSpentMinutes = $averageTimeSpentMinutes;
 		$this->dirtyAverageTimeSpentMinutes = true;
-		return $this;
-	}
-
-	/**
-	 * Set zoho field Box Folder ID
-	 * Type: Text
-	 * Read only: false
-	 * Max length: 255
-	 * Custom field: true
-	 *
-	 * @param string $boxFolderID
-	 */
-	public function setBoxFolderID($boxFolderID) {
-		$this->boxFolderID = $boxFolderID;
-		$this->dirtyBoxFolderID = true;
 		return $this;
 	}
 
@@ -2476,6 +2490,36 @@ class Undergraduate implements \Wabel\Zoho\CRM\ZohoBeanInterface {
 	public function setReferrer($referrer) {
 		$this->referrer = $referrer;
 		$this->dirtyReferrer = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Region
+	 * Type: Lookup
+	 * Read only: false
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @param string $region
+	 */
+	public function setRegion($region) {
+		$this->region = $region;
+		$this->dirtyRegion = true;
+		return $this;
+	}
+
+	/**
+	 * Set zoho field Region_ID
+	 * Type: Lookup ID
+	 * Read only: true
+	 * Max length: 120
+	 * Custom field: true
+	 *
+	 * @param string $regionID
+	 */
+	public function setRegionID($regionID) {
+		$this->regionID = $regionID;
+		$this->dirtyRegionID = true;
 		return $this;
 	}
 

@@ -4,71 +4,8 @@ namespace Wabel\Zoho\CRM\Sync;
 require 'ContactApplicationBean.php';
 require 'ContactMapper.php';
 
-require 'Faculty/FacultyApplicationBean.php';
-require 'Faculty/FacultyMapper.php';
-
-require 'Program/ProgramApplicationBean.php';
-require 'Program/ProgramMapper.php';
-
-require 'Undergraduate/UndergraduateApplicationBean.php';
-require 'Undergraduate/UndergraduateMapper.php';
-
-require 'EthnicGroups/EthnicGroupApplicationBean.php';
-require 'EthnicGroups/EthnicGroupMapper.php';
-
-require 'Disabilities/DisabilitiesApplicationBean.php';
-require 'Disabilities/DisabilitiesMapper.php';
-
-require 'Agreement/AgreementApplicationBean.php';
-require 'Agreement/AgreementMapper.php';
-
-require 'Node/NodeApplicationBean.php';
-require 'Node/NodeMapper.php';
-
-require 'OnGoingPrograms/OnGoingProgramApplicationBean.php';
-require 'OnGoingPrograms/OnGoingProgramMapper.php';
-
-require 'Locations/LocationApplicationBean.php';
-require 'Locations/LocationMapper.php';
-
-require 'Periods/PeriodApplicationBean.php';
-require 'Periods/PeriodMapper.php';
-
-require 'OnGoingProgramTypes/OnGoingProgramTypeApplicationBean.php';
-require 'OnGoingProgramTypes/OnGoingProgramTypeMapper.php';
-
-require 'Accounts/AccountApplicationBean.php';
-require 'Accounts/AccountMapper.php';
-
-require 'Jornadas/JornadaApplicationBean.php';
-require 'Jornadas/JornadaMapper.php';
-
-require 'DegreeTypes/DegreeTypesApplicationBean.php';
-require 'DegreeTypes/DegreeTypesMapper.php';
-
-require 'OnGoingProgramLoad/OnGoingProgramLoadApplicationBean.php';
-require 'OnGoingProgramLoad/OnGoingProgramLoadMapper.php';
-
-
 
 use Psr\Log\NullLogger;
-use TestNamespace\ContactZohoDao;
-use TestNamespace\DegreeTypesZohoDao;
-use TestNamespace\OnGoingProgramLoadZohoDao;
-use TestNamespace\FacultyZohoDao;
-use TestNamespace\ProgramZohoDao;
-use TestNamespace\UndergraduateZohoDao;
-use TestNamespace\EthnicGroupZohoDao;
-use TestNamespace\DisabilityZohoDao;
-use TestNamespace\CityZohoDao;
-use TestNamespace\NodeZohoDao;
-use TestNamespace\AgreementZohoDao;
-use TestNamespace\LocationZohoDao;
-use TestNamespace\OnGoingProgramZohoDao;    
-use TestNamespace\PeriodZohoDao;
-use TestNamespace\OnGoingProgramTypeZohoDao;
-use TestNamespace\AccountZohoDao;
-use TestNamespace\JornadaZohoDao;
 use Wabel\Zoho\CRM\Service\EntitiesGeneratorService;
 use Wabel\Zoho\CRM\ZohoClient;
 use Doctrine\DBAL\Configuration;
@@ -451,14 +388,14 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $zohoSynchronizer = new ZohoSynchronizer($degreeTypeZohoDao, $mapper);
         $zohoSynchronizer->sendAppBeansToZoho(); */
 
-        $getAllOnGoingProgramLoad = $conn->fetchAll('SELECT * FROM SATURN.STVATTS WHERE STVATTS_DESC like (\'%CARGA%\')');
+        /* $getAllOnGoingProgramLoad = $conn->fetchAll('SELECT * FROM SATURN.STVATTS WHERE STVATTS_DESC like (\'%CARGA%\')');
         $OnGoingProgramLoadArr = [];
         foreach ($getAllOnGoingProgramLoad as $key  => $value) {                        
             $newOnGoPloadEl = new OnGoingProgramLoadApplicationBean(null, $value['STVATTS_DESC'], $value['STVATTS_CODE']);
             array_push($OnGoingProgramLoadArr, $newOnGoPloadEl);            
         }        
         $generator = $this->getEntitiesGeneratorService();
-        /* $generator->generateModule('CustomModule22', 'OnGoingProgramLoad', 'OnGoingProgramLoad', __DIR__.'/generated/', 'TestNamespace'); */
+        $generator->generateModule('CustomModule22', 'OnGoingProgramLoad', 'OnGoingProgramLoad', __DIR__.'/generated/', 'TestNamespace');
         require __DIR__.'/generated/OnGoingProgramLoad.php';
         require __DIR__.'/generated/OnGoingProgramLoadZohoDao.php';
         $onGoingProgramLoadZohoDao = new OnGoingProgramLoadZohoDao($this->getZohoClient());
@@ -467,7 +404,7 @@ class ZohoSynchronizerTest extends \PHPUnit_Framework_TestCase
         $mapper->setOnGoingProgramLoad($OnGoingProgramLoadArr);
         
         $zohoSynchronizer = new ZohoSynchronizer($onGoingProgramLoadZohoDao, $mapper);
-        $zohoSynchronizer->sendAppBeansToZoho();
+        $zohoSynchronizer->sendAppBeansToZoho(); */
 
     }
 }

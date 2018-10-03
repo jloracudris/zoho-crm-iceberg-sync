@@ -3,89 +3,61 @@ namespace TestNamespace;
 
 /**
  */
-class PeriodZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
+class AcademicRightStatusZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 
 	/**
 	 */
 	public function getBeanClassName() {
-		return 'TestNamespace\\Period';
+		return 'TestNamespace\\AcademicRightStatus';
 	}
 
 	/**
 	 */
 	public function getFields() {
 		return array (
-		  'CustomModule16 Information' => 
+		  'CustomModule26 Information' => 
 		  array (
-		    'CustomModule16 Name' => 
+		    'Academic Rights Code' => 
 		    array (
-		      'req' => true,
+		      'req' => false,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 120,
-		      'label' => 'CustomModule16 Name',
-		      'dv' => 'Academic Period Code',
-		      'customfield' => false,
+		      'maxlength' => 255,
+		      'label' => 'Academic Rights Code',
+		      'dv' => 'Academic Rights Code',
+		      'customfield' => true,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule16Name',
-		      'setter' => 'setCustomModule16Name',
-		      'name' => 'customModule16Name',
+		      'getter' => 'getAcademicRightsCode',
+		      'setter' => 'setAcademicRightsCode',
+		      'name' => 'academicRightsCode',
 		    ),
-		    'CustomModule16 Owner' => 
+		    'CustomModule26 Owner' => 
 		    array (
 		      'req' => false,
 		      'type' => 'Lookup',
 		      'isreadonly' => false,
 		      'maxlength' => 120,
-		      'label' => 'CustomModule16 Owner',
-		      'dv' => 'Academic Period Propietario',
+		      'label' => 'CustomModule26 Owner',
+		      'dv' => 'Academic Rights Status Propietario',
 		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getCustomModule16Owner',
-		      'setter' => 'setCustomModule16Owner',
-		      'name' => 'customModule16Owner',
+		      'getter' => 'getCustomModule26Owner',
+		      'setter' => 'setCustomModule26Owner',
+		      'name' => 'customModule26Owner',
 		    ),
-		    'Academic Period Name' => 
+		    'CustomModule26 Name' => 
 		    array (
 		      'req' => true,
 		      'type' => 'Text',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
-		      'label' => 'Academic Period Name',
-		      'dv' => 'Academic Period Name',
-		      'customfield' => true,
+		      'maxlength' => 120,
+		      'label' => 'CustomModule26 Name',
+		      'dv' => 'Nombre de Academic Rights Status',
+		      'customfield' => false,
 		      'phpType' => 'string',
-		      'getter' => 'getAcademicPeriodName',
-		      'setter' => 'setAcademicPeriodName',
-		      'name' => 'academicPeriodName',
-		    ),
-		    'Year' => 
-		    array (
-		      'req' => false,
-		      'type' => 'Integer',
-		      'isreadonly' => false,
-		      'maxlength' => 9,
-		      'label' => 'Year',
-		      'dv' => 'Year',
-		      'customfield' => true,
-		      'phpType' => 'int',
-		      'getter' => 'getYear',
-		      'setter' => 'setYear',
-		      'name' => 'year',
-		    ),
-		    'Start At' => 
-		    array (
-		      'req' => false,
-		      'type' => 'Date',
-		      'isreadonly' => false,
-		      'maxlength' => 20,
-		      'label' => 'Start At',
-		      'dv' => 'Start At',
-		      'customfield' => true,
-		      'phpType' => '\\DateTime',
-		      'getter' => 'getStartAt',
-		      'setter' => 'setStartAt',
-		      'name' => 'startAt',
+		      'getter' => 'getCustomModule26Name',
+		      'setter' => 'setCustomModule26Name',
+		      'name' => 'customModule26Name',
 		    ),
 		    'Created By' => 
 		    array (
@@ -101,19 +73,23 @@ class PeriodZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setCreatedBy',
 		      'name' => 'createdBy',
 		    ),
-		    'End At' => 
+		    'Currency' => 
 		    array (
 		      'req' => false,
-		      'type' => 'Date',
+		      'type' => 'Pick List',
 		      'isreadonly' => false,
-		      'maxlength' => 20,
-		      'label' => 'End At',
-		      'dv' => 'End At',
-		      'customfield' => true,
-		      'phpType' => '\\DateTime',
-		      'getter' => 'getEndAt',
-		      'setter' => 'setEndAt',
-		      'name' => 'endAt',
+		      'maxlength' => 5,
+		      'label' => 'Currency',
+		      'dv' => 'Moneda',
+		      'customfield' => false,
+		      'values' => 
+		      array (
+		        0 => 'COP',
+		      ),
+		      'phpType' => 'string',
+		      'getter' => 'getCurrency',
+		      'setter' => 'setCurrency',
+		      'name' => 'currency',
 		    ),
 		    'Modified By' => 
 		    array (
@@ -157,24 +133,6 @@ class PeriodZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setTag',
 		      'name' => 'tag',
 		    ),
-		    'Currency' => 
-		    array (
-		      'req' => false,
-		      'type' => 'Pick List',
-		      'isreadonly' => false,
-		      'maxlength' => 5,
-		      'label' => 'Currency',
-		      'dv' => 'Moneda',
-		      'customfield' => false,
-		      'values' => 
-		      array (
-		        0 => 'COP',
-		      ),
-		      'phpType' => 'string',
-		      'getter' => 'getCurrency',
-		      'setter' => 'setCurrency',
-		      'name' => 'currency',
-		    ),
 		    'createdTime' => 
 		    array (
 		      'req' => false,
@@ -210,18 +168,18 @@ class PeriodZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 	/**
 	 */
 	public function getModule() {
-		return 'CustomModule16';
+		return 'CustomModule26';
 	}
 
 	/**
 	 */
 	public function getPluralModuleName() {
-		return 'Periods';
+		return 'AcademicRightStatus';
 	}
 
 	/**
 	 */
 	public function getSingularModuleName() {
-		return 'Period';
+		return 'AcademicRightStatus';
 	}
 }

@@ -195,24 +195,6 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setGender',
 		      'name' => 'gender',
 		    ),
-		    'Currency' => 
-		    array (
-		      'req' => false,
-		      'type' => 'Pick List',
-		      'isreadonly' => false,
-		      'maxlength' => 5,
-		      'label' => 'Currency',
-		      'dv' => 'Moneda',
-		      'customfield' => false,
-		      'values' => 
-		      array (
-		        0 => 'COP',
-		      ),
-		      'phpType' => 'string',
-		      'getter' => 'getCurrency',
-		      'setter' => 'setCurrency',
-		      'name' => 'currency',
-		    ),
 		    'Created By' => 
 		    array (
 		      'req' => false,
@@ -255,19 +237,23 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setTag',
 		      'name' => 'tag',
 		    ),
-		    'Box Folder ID' => 
+		    'Currency' => 
 		    array (
 		      'req' => false,
-		      'type' => 'Text',
+		      'type' => 'Pick List',
 		      'isreadonly' => false,
-		      'maxlength' => 255,
-		      'label' => 'Box Folder ID',
-		      'dv' => 'Box Folder ID',
-		      'customfield' => true,
+		      'maxlength' => 5,
+		      'label' => 'Currency',
+		      'dv' => 'Moneda',
+		      'customfield' => false,
+		      'values' => 
+		      array (
+		        0 => 'COP',
+		      ),
 		      'phpType' => 'string',
-		      'getter' => 'getBoxFolderID',
-		      'setter' => 'setBoxFolderID',
-		      'name' => 'boxFolderID',
+		      'getter' => 'getCurrency',
+		      'setter' => 'setCurrency',
+		      'name' => 'currency',
 		    ),
 		    'Last Activity Time' => 
 		    array (
@@ -454,19 +440,19 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setMailingState',
 		      'name' => 'mailingState',
 		    ),
-		    'City' => 
+		    'Region' => 
 		    array (
 		      'req' => false,
 		      'type' => 'Lookup',
 		      'isreadonly' => false,
 		      'maxlength' => 120,
-		      'label' => 'City',
-		      'dv' => 'City',
+		      'label' => 'Region',
+		      'dv' => 'Region',
 		      'customfield' => true,
 		      'phpType' => 'string',
-		      'getter' => 'getCity',
-		      'setter' => 'setCity',
-		      'name' => 'city',
+		      'getter' => 'getRegion',
+		      'setter' => 'setRegion',
+		      'name' => 'region',
 		    ),
 		    'Mailing Zip' => 
 		    array (
@@ -482,6 +468,20 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'setter' => 'setMailingZip',
 		      'name' => 'mailingZip',
 		    ),
+		    'City' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Lookup',
+		      'isreadonly' => false,
+		      'maxlength' => 120,
+		      'label' => 'City',
+		      'dv' => 'City',
+		      'customfield' => true,
+		      'phpType' => 'string',
+		      'getter' => 'getCity',
+		      'setter' => 'setCity',
+		      'name' => 'city',
+		    ),
 		    'Mailing Street' => 
 		    array (
 		      'req' => false,
@@ -495,6 +495,20 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 		      'getter' => 'getMailingStreet',
 		      'setter' => 'setMailingStreet',
 		      'name' => 'mailingStreet',
+		    ),
+		    'Region_ID' => 
+		    array (
+		      'req' => false,
+		      'type' => 'Lookup ID',
+		      'isreadonly' => true,
+		      'maxlength' => 100,
+		      'label' => 'Region_ID',
+		      'dv' => 'Region_ID',
+		      'customfield' => true,
+		      'phpType' => 'string',
+		      'getter' => 'getRegionID',
+		      'setter' => 'setRegionID',
+		      'name' => 'regionID',
 		    ),
 		    'City_ID' => 
 		    array (
@@ -922,7 +936,7 @@ class UndergraduateZohoDao extends \Wabel\Zoho\CRM\AbstractZohoDao {
 	/**
 	 */
 	public function getPluralModuleName() {
-		return 'Undergraduates';
+		return 'Contacts';
 	}
 
 	/**

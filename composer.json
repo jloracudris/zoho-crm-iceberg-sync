@@ -16,7 +16,8 @@
 		"doctrine/dbal": "^2.8",
 		"kalfheim/sanitizer": "^1.0",
 		"daylerees/sanitizer": "^1.0",
-		"neitanod/forceutf8": "~2.0"
+		"neitanod/forceutf8": "~2.0",
+		"athari/yalinqo": "^2.0"
 	},
   "require-dev" : {
 	  "phpunit/phpunit": "~4.0",
